@@ -39,6 +39,37 @@
 /* 全局变量定义 */
 volatile USART_RxTx_TypeDef USART_RxStruct = {0};
 volatile USART_RxTx_TypeDef USART_TxStruct = {0};
+
+typedef struct
+{
+    uint16_t norm_tof;
+    uint16_t norm_peak;
+    uint32_t norm_noise;
+    uint16_t multshot;
+    uint16_t atten_peak;
+    uint32_t atten_noise;
+    uint16_t ref_tof;
+    int32_t  temperature;   // 0.01℃
+    int16_t  cal_tof;       // mm
+    uint8_t  confidence;
+} YC02_FrameData_t;
+
+//== 测试帧
+static const uint8_t yc02_test_frame[27] =
+{
+    0x5A, 0x8E, 0x17,
+    0x37, 0x29,
+    0x89, 0x6D,
+    0xD4, 0x00, 0x00,
+    0xB8, 0x01,
+    0xDA, 0x14,
+    0x09, 0x00, 0x00,
+    0x46, 0x26,
+    0xAB, 0x0F, 0x00, 0x00,
+    0x17, 0x03,
+    0x64,
+    0x7D
+};
 /* Private functions **************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -170,43 +201,109 @@ void USART_RxIdle_Start(uint16_t MaxLength)
 //    USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
 //}
 
+static uint16_t read_le16(const uint8_t *p)
+{
+    return (uint16_t)(p[0] | (p[1] << 8));
+}
+
+static uint32_t read_le24(const uint8_t *p)
+{
+    return (uint32_t)(p[0] | ((uint32_t)p[1] << 8) | ((uint32_t)p[2] << 16));
+}
+
+static int32_t read_le32s(const uint8_t *p)
+{
+    return (int32_t)((uint32_t)p[0] |
+                    ((uint32_t)p[1] << 8) |
+                    ((uint32_t)p[2] << 16) |
+                    ((uint32_t)p[3] << 24));
+}
+
+static uint8_t yc02_checksum(const uint8_t *buf, uint16_t len_without_checksum)
+{
+    uint16_t i;
+    uint32_t sum = 0;
+
+    for (i = 0; i < len_without_checksum; i++)
+    {
+        sum += buf[i];
+    }
+
+    return (uint8_t)(sum & 0xFF);
+}
+
+static uint8_t YC02_ParseFrame(const uint8_t *buf, uint16_t len, YC02_FrameData_t *out)
+{
+    if ((buf == 0) || (out == 0))
+    {
+        return 0;
+    }
+
+    /* 总长度应为27字节 */
+    if (len != 27)
+    {
+        return 0;
+    }
+
+    if (buf[0] != 0x5A)
+    {
+        return 0;
+    }
+
+    if (buf[1] != 0x8E)
+    {
+        return 0;
+    }
+
+    if (buf[2] != 0x17)
+    {
+        return 0;
+    }
+
+    if (yc02_checksum(buf, 26) != buf[26])
+    {
+        return 0;
+    }
+
+    out->norm_tof    = read_le16(&buf[3]);   /* 3~4 */
+    out->norm_peak   = read_le16(&buf[5]);   /* 5~6 */
+    out->norm_noise  = read_le24(&buf[7]);   /* 7~9 */
+    out->multshot    = read_le16(&buf[10]);  /* 10~11 */
+    out->atten_peak  = read_le16(&buf[12]);  /* 12~13 */
+    out->atten_noise = read_le24(&buf[14]);  /* 14~16 */
+    out->ref_tof     = read_le16(&buf[17]);  /* 17~18 */
+    out->temperature = read_le32s(&buf[19]); /* 19~22 */
+    out->cal_tof     = (int16_t)read_le16(&buf[23]); /* 23~24 */
+    out->confidence  = buf[25];              /* 25 */
+
+    return 1;
+}
 /***********************************************************************************************************************
   * @brief
   * @note   none
   * @param  none
   * @retval none
   *********************************************************************************************************************/
+
+//== 正常解析
 void USART_Interrupt_Sample(void)
 {
-    uint16_t i = 0;  
-    
+    uint16_t i = 0;
+    YC02_FrameData_t frame;
+
     USART_Configure(460800);
-    
+
     printf("\r\nTest %s", __FUNCTION__);
 
     USART_RxStruct.CompleteFlag = 0;
     USART_TxStruct.CompleteFlag = 1;
 
-    /* 最大帧长 64 字节 */
     USART_RxIdle_Start(30);
 
-    printf("\r\nUSART2 idle rx start, max frame = 32 bytes");
+    printf("\r\nUSART2 idle rx start, max frame = 30 bytes");
 
     while (1)
     {
-        //== 按字符串打印
-//          if (USART_RxStruct.CompleteFlag)
-//        {
-//            USART_RxStruct.Buffer[USART_RxStruct.CurrentCount] = '\0';
-
-//            printf("\r\nFrame done, len = %d", USART_RxStruct.CurrentCount);
-//            printf("\r\nData(str): %s\r\n", USART_RxStruct.Buffer);
-
-//            USART_RxIdle_Start(30);
-//        }
-
-          //== 按16进制打印  
-           
         if (USART_RxStruct.CompleteFlag)
         {
             printf("\r\nFrame done, len = %d", USART_RxStruct.CurrentCount);
@@ -217,13 +314,142 @@ void USART_Interrupt_Sample(void)
                 printf("%02X ", USART_RxStruct.Buffer[i]);
             }
 
+            if (YC02_ParseFrame((uint8_t *)USART_RxStruct.Buffer,
+                                USART_RxStruct.CurrentCount,
+                                &frame))
+            {
+                printf("\r\nParse OK");
+                printf("\r\nnorm_tof    = %u", frame.norm_tof);
+                printf("\r\nnorm_peak   = %u", frame.norm_peak);
+                printf("\r\nnorm_noise  = %lu", (unsigned long)frame.norm_noise);
+                printf("\r\nmultshot    = %u", frame.multshot);
+                printf("\r\natten_peak  = %u", frame.atten_peak);
+                printf("\r\natten_noise = %lu", (unsigned long)frame.atten_noise);
+                printf("\r\nref_tof     = %u", frame.ref_tof);
+                printf("\r\ntemperature = %ld (0.01C)", (long)frame.temperature);
+                printf("\r\ntemperature = %ld.%02ld C",
+                       (long)(frame.temperature / 100),
+                       (long)(frame.temperature >= 0 ? (frame.temperature % 100) : -(frame.temperature % 100)));
+                printf("\r\ncal_tof     = %d mm", frame.cal_tof);
+                printf("\r\nconfidence  = %u", frame.confidence);
+            }
+            else
+            {
+                printf("\r\nParse FAIL");
+            }
+
             printf("\r\n");
 
-            /* 重新开启下一帧接收 */
             USART_RxIdle_Start(30);
         }
     }
 }
+
+
+/**   
+//== 打印测试帧
+//== 测试结果应该是
+    norm_tof    = 10551
+    norm_peak   = 28041
+    norm_noise  = 212
+    multshot    = 440
+    atten_peak  = 5338
+    atten_noise = 9
+    ref_tof     = 9798
+    temperature = 40.11 C
+    cal_tof     = 791 mm
+    confidence  = 100
+**/
+//void USART_Interrupt_Sample(void)
+//{
+//    uint16_t i;
+//    YC02_FrameData_t frame;
+
+//    USART_Configure(460800);
+//    printf("\r\nTest %s", __FUNCTION__);
+
+//    printf("\r\nTest frame hex: ");
+//    for (i = 0; i < sizeof(yc02_test_frame); i++)
+//    {
+//        printf("%02X ", yc02_test_frame[i]);
+//    }
+//    printf("\r\n");
+
+//    if (YC02_ParseFrame(yc02_test_frame, sizeof(yc02_test_frame), &frame))
+//    {
+//        printf("\r\nParse OK");
+//        printf("\r\nnorm_tof    = %u", frame.norm_tof);
+//        printf("\r\nnorm_peak   = %u", frame.norm_peak);
+//        printf("\r\nnorm_noise  = %lu", (unsigned long)frame.norm_noise);
+//        printf("\r\nmultshot    = %u", frame.multshot);
+//        printf("\r\natten_peak  = %u", frame.atten_peak);
+//        printf("\r\natten_noise = %lu", (unsigned long)frame.atten_noise);
+//        printf("\r\nref_tof     = %u", frame.ref_tof);
+//        printf("\r\ntemperature = %ld.%02ld C",
+//               (long)(frame.temperature / 100),
+//               (long)((frame.temperature >= 0) ? (frame.temperature % 100) : -(frame.temperature % 100)));
+//        printf("\r\ncal_tof     = %d mm", frame.cal_tof);
+//        printf("\r\nconfidence  = %u", frame.confidence);
+//    }
+//    else
+//    {
+//        printf("\r\nParse FAIL");
+//    }
+
+//    while (1)
+//    {
+//    }
+//}
+
+//== 串口接收tof测试
+//void USART_Interrupt_Sample(void)
+//{
+//    uint16_t i = 0;  
+//    
+//    USART_Configure(460800);
+//    
+//    printf("\r\nTest %s", __FUNCTION__);
+
+//    USART_RxStruct.CompleteFlag = 0;
+//    USART_TxStruct.CompleteFlag = 1;
+
+//    /* 最大帧长 64 字节 */
+//    USART_RxIdle_Start(30);
+
+//    printf("\r\nUSART2 idle rx start, max frame = 32 bytes");
+
+//    while (1)
+//    {
+//        //== 按字符串打印
+////          if (USART_RxStruct.CompleteFlag)
+////        {
+////            USART_RxStruct.Buffer[USART_RxStruct.CurrentCount] = '\0';
+
+////            printf("\r\nFrame done, len = %d", USART_RxStruct.CurrentCount);
+////            printf("\r\nData(str): %s\r\n", USART_RxStruct.Buffer);
+
+////            USART_RxIdle_Start(30);
+////        }
+
+//          //== 按16进制打印  
+//           
+//        if (USART_RxStruct.CompleteFlag)
+//        {
+//            printf("\r\nFrame done, len = %d", USART_RxStruct.CurrentCount);
+//            printf("\r\nData(hex): ");
+
+//            for (i = 0; i < USART_RxStruct.CurrentCount; i++)
+//            {
+//                printf("%02X ", USART_RxStruct.Buffer[i]);
+//            }
+
+//            printf("\r\n");
+
+//            /* 重新开启下一帧接收 */
+//            USART_RxIdle_Start(30);
+//        }
+//    }
+//}
 
 /**
   * @}
