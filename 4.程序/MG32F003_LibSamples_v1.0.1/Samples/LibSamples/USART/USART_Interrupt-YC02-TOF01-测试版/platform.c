@@ -17,8 +17,8 @@
 #define PLATFORM_KEY1_PIN             GPIO_Pin_7
 #define PLATFORM_KEY2_PIN             GPIO_Pin_8
 
-volatile uint32_t PLATFORM_DelayTick = 0U;
-volatile uint32_t PLATFORM_SystemTickMs = 0U;
+volatile uint32_t PLATFORM_DelayTick = 0U;          //== 系统延迟剩余量
+volatile uint32_t PLATFORM_SystemTickMs = 0U;       //== 系统ms时基
 
 static void PLATFORM_InitDelay(void)
 {

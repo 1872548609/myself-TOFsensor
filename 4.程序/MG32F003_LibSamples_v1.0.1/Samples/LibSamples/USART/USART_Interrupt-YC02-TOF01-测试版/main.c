@@ -1210,18 +1210,19 @@ static void Sensor_AppInit(void)
 int main(void)
 {
     /* 声明一个 TOF 帧局部缓存，主循环从接收队列逐帧取出。 */
-    TOF_Frame_t frame;
+    TOF_Frame_t frame;      //== 一帧数据缓存
+    
     /* 声明主循环当前毫秒 tick。 */
-    uint32_t now;
+    uint32_t now;           //== 当前ms滴答
 
     /* 初始化系统时钟、GPIO、LED、按键、USART2 调试口及 SysTick 等平台资源。 */
-    PLATFORM_Init();
+    PLATFORM_Init();        //== 外设初始化
     
     /* 初始化 USART1 TOF 通信，并开启 RXNE/IDLE 接收与帧解析机制。 */
-    TOF_CommInit(TOF_DEFAULT_BAUDRATE);
+    TOF_CommInit(TOF_DEFAULT_BAUDRATE);        //== 开启串口1串口2，打开一次空闲接收
     
     /* 初始化业务状态机、按键消抖与未标定输出。 */
-    Sensor_AppInit();
+    Sensor_AppInit();       //== 上电初始化状态机
 
 /* 开始条件编译分支：仅当对应测试/日志宏启用时才编译以下代码。 */
 #if SENSOR_TIMING_TEST_ENABLE
