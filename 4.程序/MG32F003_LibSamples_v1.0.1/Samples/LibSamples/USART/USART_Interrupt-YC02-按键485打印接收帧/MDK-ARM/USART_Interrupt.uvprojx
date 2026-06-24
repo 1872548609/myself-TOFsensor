@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\USART_Interrupt;..\..\..\..\..\..\Device\CMSIS\Core\Include;..\..\..\..\..\..\Device\MG32F003\MG32F003_Lib\inc;..\..\..\..\..\..\Device\MG32F003\Include</IncludePath>
+              <IncludePath>..\..\USART_Interrupt;..\..\..\..\..\Device\CMSIS\Core\Include;..\..\..\..\..\Device\MG32F003\MG32F003_Lib\inc;..\..\..\..\..\Device\MG32F003\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
