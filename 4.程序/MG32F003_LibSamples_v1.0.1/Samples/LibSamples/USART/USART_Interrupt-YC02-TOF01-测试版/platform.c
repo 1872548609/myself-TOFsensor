@@ -1,17 +1,24 @@
 /**
  * @file platform.c
- * @brief YC02 板级基础初始化。
- *
- * 注意：PA10 / PA9 是板载绿灯 / 红灯；PA15 是 TOF PWD。
- * 本测试版本额外将 PA7 / PA8 配置为按键输入。
+ * @brief YC02 TOF01 产品版的板级初始化、按键、灯和 NPN 输出驱动。
  */
-
 #define _PLATFORM_C_
 
 #include "platform.h"
 
-/* 若实测 VM4304 的 PWD 为低电平运行，将 Bit_SET 改为 Bit_RESET。 */
-#define TOF_PWD_RUN_LEVEL    Bit_SET
+/* VM4304 的 PWD 运行电平，现场若实测相反，仅修改此宏。 */
+#define TOF_PWD_RUN_LEVEL             Bit_SET
+
+/* 已按验证测试版保留的管脚定义。 */
+#define PLATFORM_LED_GREEN_PIN        GPIO_Pin_10
+#define PLATFORM_LED_RED_PIN          GPIO_Pin_9
+#define PLATFORM_TOF_PWD_PIN          GPIO_Pin_15
+#define PLATFORM_OUTPUT_PIN           GPIO_Pin_11
+#define PLATFORM_KEY1_PIN             GPIO_Pin_7
+#define PLATFORM_KEY2_PIN             GPIO_Pin_8
+
+volatile uint32_t PLATFORM_DelayTick = 0U;
+volatile uint32_t PLATFORM_SystemTickMs = 0U;
 
 static void PLATFORM_InitDelay(void)
 {
@@ -26,7 +33,8 @@ static void PLATFORM_InitDelay(void)
         }
     }
 
-    NVIC_SetPriority(SysTick_IRQn, 0x00U);
+    /* SysTick 比 USART1/USART2 优先级低，避免破坏 460800bps 收帧。 */
+    NVIC_SetPriority(SysTick_IRQn, 0x03U);
 }
 
 void PLATFORM_DelayMS(uint32_t Millisecond)
@@ -38,33 +46,38 @@ void PLATFORM_DelayMS(uint32_t Millisecond)
     }
 }
 
+uint32_t PLATFORM_GetTickMs(void)
+{
+    return PLATFORM_SystemTickMs;
+}
+
 static void PLATFORM_InitBoardGpio(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct;
 
     RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_GPIOA, ENABLE);
 
-    /* PA9 红灯、PA10 绿灯、PA15 TOF PWD。 */
+    /*
+     * PA9  红灯，PA10 绿灯，PA11 NPN 输出，PA15 TOF PWD。
+     * 均为推挽输出。PA11 默认低，保证 Q1 上电截止。
+     */
     GPIO_StructInit(&GPIO_InitStruct);
-    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_15;
+    GPIO_InitStruct.GPIO_Pin = PLATFORM_LED_RED_PIN |
+                               PLATFORM_LED_GREEN_PIN |
+                               PLATFORM_OUTPUT_PIN |
+                               PLATFORM_TOF_PWD_PIN;
     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_High;
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    /* 原理图中 LED 经限流电阻接地：高电平点亮。 */
-    GPIO_WriteBit(GPIOA, GPIO_Pin_10, Bit_RESET);
-    GPIO_WriteBit(GPIOA, GPIO_Pin_9, Bit_RESET);
+    GPIO_WriteBit(GPIOA, PLATFORM_LED_GREEN_PIN, Bit_RESET);
+    GPIO_WriteBit(GPIOA, PLATFORM_LED_RED_PIN, Bit_RESET);
+    GPIO_WriteBit(GPIOA, PLATFORM_OUTPUT_PIN, Bit_RESET);
+    GPIO_WriteBit(GPIOA, PLATFORM_TOF_PWD_PIN, TOF_PWD_RUN_LEVEL);
 
-    /* PA15 为 TOF 模块 PWD。 */
-    GPIO_WriteBit(GPIOA, GPIO_Pin_15, TOF_PWD_RUN_LEVEL);
-
-    /*
-     * 按键：KEY_BLUE -> PA7，KEY_RED -> PA8。
-     * 硬件有 10K 上拉、按下接地，因此按下时读取为低电平。
-     * 当前测试仅用 PA7（蓝键）触发 USART2 回传。
-     */
+    /* PA7 / PA8：硬件 10K 上拉，按下接地。 */
     GPIO_StructInit(&GPIO_InitStruct);
-    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8;
+    GPIO_InitStruct.GPIO_Pin = PLATFORM_KEY1_PIN | PLATFORM_KEY2_PIN;
     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_High;
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPU;
     GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -74,18 +87,18 @@ void PLATFORM_LED_Enable(LEDn_TypeDef LEDn, FunctionalState State)
 {
     switch (LEDn)
     {
-        case LED1:  /* 绿灯：PA10，高有效 */
-            GPIO_WriteBit(GPIOA, GPIO_Pin_10,
+        case LED1:
+            GPIO_WriteBit(GPIOA,
+                          PLATFORM_LED_GREEN_PIN,
                           (State == ENABLE) ? Bit_SET : Bit_RESET);
             break;
 
-        case LED2:  /* 红灯：PA9，高有效 */
-            GPIO_WriteBit(GPIOA, GPIO_Pin_9,
+        case LED2:
+            GPIO_WriteBit(GPIOA,
+                          PLATFORM_LED_RED_PIN,
                           (State == ENABLE) ? Bit_SET : Bit_RESET);
             break;
 
-        case LED3:
-        case LED4:
         default:
             break;
     }
@@ -96,22 +109,38 @@ void PLATFORM_LED_Toggle(LEDn_TypeDef LEDn)
     switch (LEDn)
     {
         case LED1:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_10,
-                          (GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_10) != 0U)
-                              ? Bit_RESET : Bit_SET);
+            GPIO_WriteBit(GPIOA,
+                          PLATFORM_LED_GREEN_PIN,
+                          (GPIO_ReadOutputDataBit(GPIOA,
+                                                   PLATFORM_LED_GREEN_PIN) != 0U) ? Bit_RESET : Bit_SET);
             break;
 
         case LED2:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_9,
-                          (GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_9) != 0U)
-                              ? Bit_RESET : Bit_SET);
+            GPIO_WriteBit(GPIOA,
+                          PLATFORM_LED_RED_PIN,
+                          (GPIO_ReadOutputDataBit(GPIOA,
+                                                   PLATFORM_LED_RED_PIN) != 0U) ? Bit_RESET : Bit_SET);
             break;
 
-        case LED3:
-        case LED4:
         default:
             break;
     }
+}
+
+uint8_t PLATFORM_KeyIsPressed(PLATFORM_Key_t key)
+{
+    uint16_t pin;
+
+    pin = (key == PLATFORM_KEY1) ? PLATFORM_KEY1_PIN : PLATFORM_KEY2_PIN;
+
+    return (GPIO_ReadInputDataBit(GPIOA, pin) == Bit_RESET) ? 1U : 0U;
+}
+
+void PLATFORM_OutputTransistor(FunctionalState State)
+{
+    GPIO_WriteBit(GPIOA,
+                  PLATFORM_OUTPUT_PIN,
+                  (State == ENABLE) ? Bit_SET : Bit_RESET);
 }
 
 void PLATFORM_Init(void)
