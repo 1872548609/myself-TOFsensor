@@ -1,0 +1,839 @@
+Component: ARM Compiler 5.06 update 7 (build 960) Tool: armlink [4d3601]
+
+==============================================================================
+
+Section Cross References
+
+    main.o(i.main) refers to platform.o(i.PLATFORM_Init) for PLATFORM_Init
+    main.o(i.main) refers to usart_interrupt.o(i.USART_Interrupt_Sample) for USART_Interrupt_Sample
+    usart_interrupt.o(i.USART_Configure) refers to mg32_misc.o(i.NVIC_Init) for NVIC_Init
+    usart_interrupt.o(i.USART_Configure) refers to mg32_rcc.o(i.RCC_AHBPeriphClockCmd) for RCC_AHBPeriphClockCmd
+    usart_interrupt.o(i.USART_Configure) refers to mg32_gpio.o(i.GPIO_PinAFConfig) for GPIO_PinAFConfig
+    usart_interrupt.o(i.USART_Configure) refers to mg32_gpio.o(i.GPIO_StructInit) for GPIO_StructInit
+    usart_interrupt.o(i.USART_Configure) refers to mg32_gpio.o(i.GPIO_Init) for GPIO_Init
+    usart_interrupt.o(i.USART_Configure) refers to mg32_rcc.o(i.RCC_APB1PeriphClockCmd) for RCC_APB1PeriphClockCmd
+    usart_interrupt.o(i.USART_Configure) refers to mg32_usart.o(i.USART_StructInit) for USART_StructInit
+    usart_interrupt.o(i.USART_Configure) refers to mg32_usart.o(i.USART_Init) for USART_Init
+    usart_interrupt.o(i.USART_Configure) refers to mg32_usart.o(i.USART_ITConfig) for USART_ITConfig
+    usart_interrupt.o(i.USART_Configure) refers to mg32_usart.o(i.USART_Cmd) for USART_Cmd
+    usart_interrupt.o(i.USART_Interrupt_Sample) refers to usart_interrupt.o(i.USART_Configure) for USART_Configure
+    usart_interrupt.o(i.USART_Interrupt_Sample) refers to usart_interrupt.o(i.USART_RxIdle_Start) for USART_RxIdle_Start
+    usart_interrupt.o(i.USART_Interrupt_Sample) refers to platform.o(i.PLATFORM_LED_Enable) for PLATFORM_LED_Enable
+    usart_interrupt.o(i.USART_Interrupt_Sample) refers to usart_interrupt.o(i.YC02_ParseFrame) for YC02_ParseFrame
+    usart_interrupt.o(i.USART_Interrupt_Sample) refers to usart_interrupt.o(.bss) for USART_RxStruct
+    usart_interrupt.o(i.USART_Interrupt_Sample) refers to usart_interrupt.o(.data) for g_tof_last_frame_length
+    usart_interrupt.o(i.USART_RxIdle_Start) refers to mg32_usart.o(i.USART_ReceiveData) for USART_ReceiveData
+    usart_interrupt.o(i.USART_RxIdle_Start) refers to mg32_usart.o(i.USART_ClearITPendingBit) for USART_ClearITPendingBit
+    usart_interrupt.o(i.USART_RxIdle_Start) refers to mg32_usart.o(i.USART_ClearFlag) for USART_ClearFlag
+    usart_interrupt.o(i.USART_RxIdle_Start) refers to mg32_usart.o(i.USART_ITConfig) for USART_ITConfig
+    usart_interrupt.o(i.USART_RxIdle_Start) refers to usart_interrupt.o(.bss) for USART_RxStruct
+    usart_interrupt.o(i.YC02_ParseFrame) refers to usart_interrupt.o(i.yc02_checksum) for yc02_checksum
+    usart_interrupt.o(i.YC02_ParseFrame) refers to usart_interrupt.o(i.read_le16) for read_le16
+    usart_interrupt.o(i.YC02_ParseFrame) refers to usart_interrupt.o(i.read_le24) for read_le24
+    usart_interrupt.o(i.YC02_ParseFrame) refers to usart_interrupt.o(i.read_le32s) for read_le32s
+    platform.o(i.PLATFORM_DelayMS) refers to platform.o(.data) for PLATFORM_DelayTick
+    platform.o(i.PLATFORM_Init) refers to platform.o(i.PLATFORM_InitDelay) for PLATFORM_InitDelay
+    platform.o(i.PLATFORM_Init) refers to platform.o(i.PLATFORM_InitBoardGpio) for PLATFORM_InitBoardGpio
+    platform.o(i.PLATFORM_InitBoardGpio) refers to mg32_rcc.o(i.RCC_AHBPeriphClockCmd) for RCC_AHBPeriphClockCmd
+    platform.o(i.PLATFORM_InitBoardGpio) refers to mg32_gpio.o(i.GPIO_StructInit) for GPIO_StructInit
+    platform.o(i.PLATFORM_InitBoardGpio) refers to mg32_gpio.o(i.GPIO_Init) for GPIO_Init
+    platform.o(i.PLATFORM_InitBoardGpio) refers to mg32_gpio.o(i.GPIO_WriteBit) for GPIO_WriteBit
+    platform.o(i.PLATFORM_InitDelay) refers to mg32_rcc.o(i.RCC_GetClocksFreq) for RCC_GetClocksFreq
+    platform.o(i.PLATFORM_InitDelay) refers to uidiv.o(.text) for __aeabi_uidivmod
+    platform.o(i.PLATFORM_InitDelay) refers to platform.o(i.__NVIC_SetPriority) for __NVIC_SetPriority
+    platform.o(i.PLATFORM_LED_Enable) refers to mg32_gpio.o(i.GPIO_WriteBit) for GPIO_WriteBit
+    platform.o(i.PLATFORM_LED_Toggle) refers to mg32_gpio.o(i.GPIO_ReadOutputDataBit) for GPIO_ReadOutputDataBit
+    platform.o(i.PLATFORM_LED_Toggle) refers to mg32_gpio.o(i.GPIO_WriteBit) for GPIO_WriteBit
+    mg32f003_it.o(i.SysTick_Handler) refers to platform.o(.data) for PLATFORM_DelayTick
+    mg32f003_it.o(i.USART1_IRQHandler) refers to mg32_usart.o(i.USART_GetITStatus) for USART_GetITStatus
+    mg32f003_it.o(i.USART1_IRQHandler) refers to mg32_usart.o(i.USART_ReceiveData) for USART_ReceiveData
+    mg32f003_it.o(i.USART1_IRQHandler) refers to mg32_usart.o(i.USART_ITConfig) for USART_ITConfig
+    mg32f003_it.o(i.USART1_IRQHandler) refers to usart_interrupt.o(.bss) for USART_RxStruct
+    mg32_adc.o(i.ADC_DeInit) refers to mg32_rcc.o(i.RCC_APB1PeriphResetCmd) for RCC_APB1PeriphResetCmd
+    mg32_flash.o(i.FLASH_EnableWriteProtection) refers to mg32_flash.o(i.FLASH_ProgramOptionHalfWord) for FLASH_ProgramOptionHalfWord
+    mg32_flash.o(i.FLASH_EraseAllPages) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_EraseDataAreaPage) refers to mg32_flash.o(i.FLASH_OPTB_Enable) for FLASH_OPTB_Enable
+    mg32_flash.o(i.FLASH_EraseDataAreaPage) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_EraseOptionBytes) refers to mg32_flash.o(i.FLASH_OPTB_Enable) for FLASH_OPTB_Enable
+    mg32_flash.o(i.FLASH_EraseOptionBytes) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_ErasePage) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_ProgramDataAreaHalfWord) refers to mg32_flash.o(i.FLASH_OPTB_Enable) for FLASH_OPTB_Enable
+    mg32_flash.o(i.FLASH_ProgramDataAreaHalfWord) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_ProgramHalfWord) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_ProgramOptionByteData) refers to mg32_flash.o(i.FLASH_OPTB_Enable) for FLASH_OPTB_Enable
+    mg32_flash.o(i.FLASH_ProgramOptionByteData) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_ProgramOptionHalfWord) refers to mg32_flash.o(i.FLASH_OPTB_Enable) for FLASH_OPTB_Enable
+    mg32_flash.o(i.FLASH_ProgramOptionHalfWord) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_ProgramWord) refers to mg32_flash.o(i.FLASH_ProgramHalfWord) for FLASH_ProgramHalfWord
+    mg32_flash.o(i.FLASH_UserOptionByteConfig) refers to mg32_flash.o(i.FLASH_OPTB_Enable) for FLASH_OPTB_Enable
+    mg32_flash.o(i.FLASH_UserOptionByteConfig) refers to mg32_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    mg32_flash.o(i.FLASH_WaitForLastOperation) refers to mg32_flash.o(i.FLASH_GetStatus) for FLASH_GetStatus
+    mg32_gpio.o(i.GPIO_DeInit) refers to mg32_rcc.o(i.RCC_AHBPeriphResetCmd) for RCC_AHBPeriphResetCmd
+    mg32_i2c.o(i.I2C_DeInit) refers to mg32_rcc.o(i.RCC_APB1PeriphResetCmd) for RCC_APB1PeriphResetCmd
+    mg32_i2c.o(i.I2C_ITConfig) refers to mg32_i2c.o(i.I2C_ReadCmd) for I2C_ReadCmd
+    mg32_i2c.o(i.I2C_Init) refers to mg32_rcc.o(i.RCC_GetClocksFreq) for RCC_GetClocksFreq
+    mg32_i2c.o(i.I2C_Init) refers to uidiv.o(.text) for __aeabi_uidivmod
+    mg32_iwdg.o(i.IVU_CheckStatus) refers to mg32_iwdg.o(i.IWDG_GetFlagStatus) for IWDG_GetFlagStatus
+    mg32_iwdg.o(i.IWDG_SetIGen) refers to mg32_iwdg.o(i.IVU_CheckStatus) for IVU_CheckStatus
+    mg32_iwdg.o(i.IWDG_SetPrescaler) refers to mg32_iwdg.o(i.PVU_CheckStatus) for PVU_CheckStatus
+    mg32_iwdg.o(i.IWDG_SetReload) refers to mg32_iwdg.o(i.RVU_CheckStatus) for RVU_CheckStatus
+    mg32_iwdg.o(i.PVU_CheckStatus) refers to mg32_iwdg.o(i.IWDG_GetFlagStatus) for IWDG_GetFlagStatus
+    mg32_iwdg.o(i.RVU_CheckStatus) refers to mg32_iwdg.o(i.IWDG_GetFlagStatus) for IWDG_GetFlagStatus
+    mg32_pwr.o(i.PWR_DeInit) refers to mg32_rcc.o(i.RCC_APB1PeriphResetCmd) for RCC_APB1PeriphResetCmd
+    mg32_rcc.o(i.RCC_GetClocksFreq) refers to mg32_rcc.o(.data) for AHBPreTable
+    mg32_spi.o(i.SPI_DeInit) refers to mg32_rcc.o(i.RCC_APB1PeriphResetCmd) for RCC_APB1PeriphResetCmd
+    mg32_tim.o(i.TIM_DeInit) refers to mg32_rcc.o(i.RCC_APB1PeriphResetCmd) for RCC_APB1PeriphResetCmd
+    mg32_tim.o(i.TIM_GetTIMxClock) refers to mg32_rcc.o(i.RCC_GetClocksFreq) for RCC_GetClocksFreq
+    mg32_tim.o(i.TIM_ICInit) refers to mg32_tim.o(i.TI1_Configure) for TI1_Configure
+    mg32_tim.o(i.TIM_ICInit) refers to mg32_tim.o(i.TIM_SetIC1Prescaler) for TIM_SetIC1Prescaler
+    mg32_tim.o(i.TIM_ICInit) refers to mg32_tim.o(i.TI2_Configure) for TI2_Configure
+    mg32_tim.o(i.TIM_ICInit) refers to mg32_tim.o(i.TIM_SetIC2Prescaler) for TIM_SetIC2Prescaler
+    mg32_tim.o(i.TIM_ICInit) refers to mg32_tim.o(i.TI3_Configure) for TI3_Configure
+    mg32_tim.o(i.TIM_ICInit) refers to mg32_tim.o(i.TIM_SetIC3Prescaler) for TIM_SetIC3Prescaler
+    mg32_tim.o(i.TIM_ICInit) refers to mg32_tim.o(i.TI4_Configure) for TI4_Configure
+    mg32_tim.o(i.TIM_ICInit) refers to mg32_tim.o(i.TIM_SetIC4Prescaler) for TIM_SetIC4Prescaler
+    mg32_tim.o(i.TIM_ITRxExternalClockConfig) refers to mg32_tim.o(i.TIM_SelectInputTrigger) for TIM_SelectInputTrigger
+    mg32_tim.o(i.TIM_PWMIConfig) refers to mg32_tim.o(i.TI1_Configure) for TI1_Configure
+    mg32_tim.o(i.TIM_PWMIConfig) refers to mg32_tim.o(i.TIM_SetIC1Prescaler) for TIM_SetIC1Prescaler
+    mg32_tim.o(i.TIM_PWMIConfig) refers to mg32_tim.o(i.TI2_Configure) for TI2_Configure
+    mg32_tim.o(i.TIM_PWMIConfig) refers to mg32_tim.o(i.TIM_SetIC2Prescaler) for TIM_SetIC2Prescaler
+    mg32_usart.o(i.USART_DeInit) refers to mg32_rcc.o(i.RCC_APB1PeriphResetCmd) for RCC_APB1PeriphResetCmd
+    mg32_usart.o(i.USART_Init) refers to mg32_rcc.o(i.RCC_GetClocksFreq) for RCC_GetClocksFreq
+    mg32_usart.o(i.USART_Init) refers to uidiv.o(.text) for __aeabi_uidivmod
+    mg32_usart.o(i.USART_SyncMasterConfig) refers to mg32_rcc.o(i.RCC_GetClocksFreq) for RCC_GetClocksFreq
+    mg32_usart.o(i.USART_SyncMasterConfig) refers to uidiv.o(.text) for __aeabi_uidivmod
+    system_mg32f003.o(i.SetSysClockToDefine) refers to uidiv.o(.text) for __aeabi_uidivmod
+    system_mg32f003.o(i.SetSysClockToDefine) refers to system_mg32f003.o(.data) for SystemCoreClock
+    system_mg32f003.o(i.SystemInit) refers to system_mg32f003.o(i.SetSysClockToDefine) for SetSysClockToDefine
+    startup_mg32f003_keil.o(RESET) refers to startup_mg32f003_keil.o(STACK) for __initial_sp
+    startup_mg32f003_keil.o(RESET) refers to startup_mg32f003_keil.o(.text) for Reset_Handler
+    startup_mg32f003_keil.o(RESET) refers to mg32f003_it.o(i.NMI_Handler) for NMI_Handler
+    startup_mg32f003_keil.o(RESET) refers to mg32f003_it.o(i.HardFault_Handler) for HardFault_Handler
+    startup_mg32f003_keil.o(RESET) refers to mg32f003_it.o(i.SVC_Handler) for SVC_Handler
+    startup_mg32f003_keil.o(RESET) refers to mg32f003_it.o(i.PendSV_Handler) for PendSV_Handler
+    startup_mg32f003_keil.o(RESET) refers to mg32f003_it.o(i.SysTick_Handler) for SysTick_Handler
+    startup_mg32f003_keil.o(RESET) refers to mg32f003_it.o(i.USART1_IRQHandler) for USART1_IRQHandler
+    startup_mg32f003_keil.o(.text) refers to system_mg32f003.o(i.SystemInit) for SystemInit
+    startup_mg32f003_keil.o(.text) refers to entry.o(.ARM.Collect$$$$00000000) for __main
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry10a.o(.ARM.Collect$$$$0000000F) for __rt_final_cpp
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry11a.o(.ARM.Collect$$$$00000011) for __rt_final_exit
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry12b.o(.ARM.Collect$$$$0000000E) for __rt_lib_shutdown_fini
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry7b.o(.ARM.Collect$$$$00000008) for _main_clock
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry8b.o(.ARM.Collect$$$$0000000A) for _main_cpp_init
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry9a.o(.ARM.Collect$$$$0000000B) for _main_init
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry5.o(.ARM.Collect$$$$00000004) for _main_scatterload
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry2.o(.ARM.Collect$$$$00000001) for _main_stk
+    entry2.o(.ARM.Collect$$$$00000001) refers to entry2.o(.ARM.Collect$$$$00002712) for __lit__00000000
+    entry2.o(.ARM.Collect$$$$00002712) refers to startup_mg32f003_keil.o(STACK) for __initial_sp
+    entry2.o(__vectab_stack_and_reset_area) refers to startup_mg32f003_keil.o(STACK) for __initial_sp
+    entry2.o(__vectab_stack_and_reset_area) refers to entry.o(.ARM.Collect$$$$00000000) for __main
+    entry5.o(.ARM.Collect$$$$00000004) refers to init.o(.text) for __scatterload
+    entry9a.o(.ARM.Collect$$$$0000000B) refers to main.o(i.main) for main
+    entry9b.o(.ARM.Collect$$$$0000000C) refers to main.o(i.main) for main
+    init.o(.text) refers to entry5.o(.ARM.Collect$$$$00000004) for __main_after_scatterload
+
+
+==============================================================================
+
+Removing Unused input sections from the image.
+
+    Removing main.o(.rev16_text), (4 bytes).
+    Removing main.o(.revsh_text), (4 bytes).
+    Removing usart_interrupt.o(.rev16_text), (4 bytes).
+    Removing usart_interrupt.o(.revsh_text), (4 bytes).
+    Removing platform.o(.rev16_text), (4 bytes).
+    Removing platform.o(.revsh_text), (4 bytes).
+    Removing platform.o(i.PLATFORM_DelayMS), (20 bytes).
+    Removing platform.o(i.PLATFORM_LED_Toggle), (112 bytes).
+    Removing mg32f003_it.o(.rev16_text), (4 bytes).
+    Removing mg32f003_it.o(.revsh_text), (4 bytes).
+    Removing mg32_adc.o(.rev16_text), (4 bytes).
+    Removing mg32_adc.o(.revsh_text), (4 bytes).
+    Removing mg32_adc.o(i.ADC_AnalogWatchdogCmd), (24 bytes).
+    Removing mg32_adc.o(i.ADC_AnalogWatchdogSingleChannelConfig), (24 bytes).
+    Removing mg32_adc.o(i.ADC_AnalogWatchdogThresholdsConfig), (40 bytes).
+    Removing mg32_adc.o(i.ADC_AnyChannelCmd), (24 bytes).
+    Removing mg32_adc.o(i.ADC_AnyChannelNumCfg), (16 bytes).
+    Removing mg32_adc.o(i.ADC_AnyChannelSelect), (72 bytes).
+    Removing mg32_adc.o(i.ADC_ClearFlag), (20 bytes).
+    Removing mg32_adc.o(i.ADC_ClearITPendingBit), (20 bytes).
+    Removing mg32_adc.o(i.ADC_Cmd), (24 bytes).
+    Removing mg32_adc.o(i.ADC_DMACmd), (24 bytes).
+    Removing mg32_adc.o(i.ADC_DeInit), (32 bytes).
+    Removing mg32_adc.o(i.ADC_ExternalTrigConvCmd), (24 bytes).
+    Removing mg32_adc.o(i.ADC_ExternalTrigSourceConfig), (52 bytes).
+    Removing mg32_adc.o(i.ADC_GetChannelConvertedValue), (14 bytes).
+    Removing mg32_adc.o(i.ADC_GetConversionValue), (8 bytes).
+    Removing mg32_adc.o(i.ADC_GetFlagStatus), (46 bytes).
+    Removing mg32_adc.o(i.ADC_GetITStatus), (46 bytes).
+    Removing mg32_adc.o(i.ADC_GetSoftwareStartConvStatus), (14 bytes).
+    Removing mg32_adc.o(i.ADC_ITConfig), (60 bytes).
+    Removing mg32_adc.o(i.ADC_Init), (108 bytes).
+    Removing mg32_adc.o(i.ADC_SampleTimeConfig), (16 bytes).
+    Removing mg32_adc.o(i.ADC_SoftwareStartConvCmd), (28 bytes).
+    Removing mg32_adc.o(i.ADC_StructInit), (14 bytes).
+    Removing mg32_adc.o(i.ADC_VrefSensorCmd), (48 bytes).
+    Removing mg32_crc.o(.rev16_text), (4 bytes).
+    Removing mg32_crc.o(.revsh_text), (4 bytes).
+    Removing mg32_crc.o(i.CRC_CalcBlockCRC), (36 bytes).
+    Removing mg32_crc.o(i.CRC_CalcCRC), (16 bytes).
+    Removing mg32_crc.o(i.CRC_GetCRC), (12 bytes).
+    Removing mg32_crc.o(i.CRC_GetIndependentDataRegister), (12 bytes).
+    Removing mg32_crc.o(i.CRC_ResetDR), (20 bytes).
+    Removing mg32_crc.o(i.CRC_SetIndependentDataRegister), (12 bytes).
+    Removing mg32_dbg.o(.rev16_text), (4 bytes).
+    Removing mg32_dbg.o(.revsh_text), (4 bytes).
+    Removing mg32_dbg.o(i.DBG_Configure), (32 bytes).
+    Removing mg32_dbg.o(i.DBG_GetDeviceIDCode), (12 bytes).
+    Removing mg32_exti.o(.rev16_text), (4 bytes).
+    Removing mg32_exti.o(.revsh_text), (4 bytes).
+    Removing mg32_exti.o(i.EXTI_ClearFlag), (12 bytes).
+    Removing mg32_exti.o(i.EXTI_ClearITPendingBit), (12 bytes).
+    Removing mg32_exti.o(i.EXTI_DeInit), (28 bytes).
+    Removing mg32_exti.o(i.EXTI_GenerateSWInterrupt), (16 bytes).
+    Removing mg32_exti.o(i.EXTI_GetFlagStatus), (24 bytes).
+    Removing mg32_exti.o(i.EXTI_GetITStatus), (36 bytes).
+    Removing mg32_exti.o(i.EXTI_Init), (192 bytes).
+    Removing mg32_exti.o(i.EXTI_StructInit), (16 bytes).
+    Removing mg32_flash.o(.rev16_text), (4 bytes).
+    Removing mg32_flash.o(.revsh_text), (4 bytes).
+    Removing mg32_flash.o(i.FLASH_ClearFlag), (12 bytes).
+    Removing mg32_flash.o(i.FLASH_EnableWriteProtection), (56 bytes).
+    Removing mg32_flash.o(i.FLASH_EraseAllPages), (52 bytes).
+    Removing mg32_flash.o(i.FLASH_EraseDataAreaPage), (52 bytes).
+    Removing mg32_flash.o(i.FLASH_EraseOptionBytes), (56 bytes).
+    Removing mg32_flash.o(i.FLASH_ErasePage), (48 bytes).
+    Removing mg32_flash.o(i.FLASH_GetFlagStatus), (36 bytes).
+    Removing mg32_flash.o(i.FLASH_GetStatus), (56 bytes).
+    Removing mg32_flash.o(i.FLASH_GetUserOptionByte), (12 bytes).
+    Removing mg32_flash.o(i.FLASH_GetWriteProtectionOptionByte), (12 bytes).
+    Removing mg32_flash.o(i.FLASH_Lock), (20 bytes).
+    Removing mg32_flash.o(i.FLASH_OPTB_Disable), (20 bytes).
+    Removing mg32_flash.o(i.FLASH_OPTB_Enable), (24 bytes).
+    Removing mg32_flash.o(i.FLASH_PrefetchBufferCmd), (24 bytes).
+    Removing mg32_flash.o(i.FLASH_ProgramDataAreaHalfWord), (44 bytes).
+    Removing mg32_flash.o(i.FLASH_ProgramHalfWord), (36 bytes).
+    Removing mg32_flash.o(i.FLASH_ProgramOptionByteData), (44 bytes).
+    Removing mg32_flash.o(i.FLASH_ProgramOptionHalfWord), (44 bytes).
+    Removing mg32_flash.o(i.FLASH_ProgramWord), (34 bytes).
+    Removing mg32_flash.o(i.FLASH_SetLatency), (24 bytes).
+    Removing mg32_flash.o(i.FLASH_Unlock), (24 bytes).
+    Removing mg32_flash.o(i.FLASH_UserOptionByteConfig), (68 bytes).
+    Removing mg32_flash.o(i.FLASH_WaitForLastOperation), (68 bytes).
+    Removing mg32_gpio.o(.rev16_text), (4 bytes).
+    Removing mg32_gpio.o(.revsh_text), (4 bytes).
+    Removing mg32_gpio.o(i.GPIO_AFIODeInit), (32 bytes).
+    Removing mg32_gpio.o(i.GPIO_DeInit), (60 bytes).
+    Removing mg32_gpio.o(i.GPIO_PinLockConfig), (54 bytes).
+    Removing mg32_gpio.o(i.GPIO_ReadInputData), (8 bytes).
+    Removing mg32_gpio.o(i.GPIO_ReadInputDataBit), (18 bytes).
+    Removing mg32_gpio.o(i.GPIO_ReadOutputData), (8 bytes).
+    Removing mg32_gpio.o(i.GPIO_ReadOutputDataBit), (18 bytes).
+    Removing mg32_gpio.o(i.GPIO_ResetBits), (4 bytes).
+    Removing mg32_gpio.o(i.GPIO_SetBits), (4 bytes).
+    Removing mg32_gpio.o(i.GPIO_Write), (4 bytes).
+    Removing mg32_i2c.o(.rev16_text), (4 bytes).
+    Removing mg32_i2c.o(.revsh_text), (4 bytes).
+    Removing mg32_i2c.o(i.I2C_CheckEvent), (18 bytes).
+    Removing mg32_i2c.o(i.I2C_ClearFlag), (152 bytes).
+    Removing mg32_i2c.o(i.I2C_ClearITPendingBit), (126 bytes).
+    Removing mg32_i2c.o(i.I2C_Cmd), (24 bytes).
+    Removing mg32_i2c.o(i.I2C_DeInit), (36 bytes).
+    Removing mg32_i2c.o(i.I2C_GeneralCallCmd), (28 bytes).
+    Removing mg32_i2c.o(i.I2C_GenerateSTART), (24 bytes).
+    Removing mg32_i2c.o(i.I2C_GenerateSTOP), (24 bytes).
+    Removing mg32_i2c.o(i.I2C_GetFlagStatus), (48 bytes).
+    Removing mg32_i2c.o(i.I2C_GetITStatus), (18 bytes).
+    Removing mg32_i2c.o(i.I2C_GetLastEvent), (10 bytes).
+    Removing mg32_i2c.o(i.I2C_GetSlaveReceivedAddr), (8 bytes).
+    Removing mg32_i2c.o(i.I2C_ITConfig), (38 bytes).
+    Removing mg32_i2c.o(i.I2C_Init), (260 bytes).
+    Removing mg32_i2c.o(i.I2C_ReadCmd), (12 bytes).
+    Removing mg32_i2c.o(i.I2C_ReceiveData), (8 bytes).
+    Removing mg32_i2c.o(i.I2C_SendData), (4 bytes).
+    Removing mg32_i2c.o(i.I2C_SlaveAddressConfig), (16 bytes).
+    Removing mg32_i2c.o(i.I2C_SlaveAddressMaskConfig), (20 bytes).
+    Removing mg32_i2c.o(i.I2C_SlaveModeCmd), (24 bytes).
+    Removing mg32_i2c.o(i.I2C_StructInit), (20 bytes).
+    Removing mg32_i2c.o(i.I2C_TargetAddressConfig), (16 bytes).
+    Removing mg32_iwdg.o(.rev16_text), (4 bytes).
+    Removing mg32_iwdg.o(.revsh_text), (4 bytes).
+    Removing mg32_iwdg.o(i.IVU_CheckStatus), (16 bytes).
+    Removing mg32_iwdg.o(i.IWDG_ClearITPendingBit), (20 bytes).
+    Removing mg32_iwdg.o(i.IWDG_Enable), (16 bytes).
+    Removing mg32_iwdg.o(i.IWDG_GetCnt), (20 bytes).
+    Removing mg32_iwdg.o(i.IWDG_GetFlagStatus), (24 bytes).
+    Removing mg32_iwdg.o(i.IWDG_GetReload), (12 bytes).
+    Removing mg32_iwdg.o(i.IWDG_OverflowConfig), (24 bytes).
+    Removing mg32_iwdg.o(i.IWDG_ReloadCounter), (16 bytes).
+    Removing mg32_iwdg.o(i.IWDG_SetIGen), (20 bytes).
+    Removing mg32_iwdg.o(i.IWDG_SetPrescaler), (20 bytes).
+    Removing mg32_iwdg.o(i.IWDG_SetReload), (20 bytes).
+    Removing mg32_iwdg.o(i.IWDG_WriteAccessCmd), (12 bytes).
+    Removing mg32_iwdg.o(i.PVU_CheckStatus), (16 bytes).
+    Removing mg32_iwdg.o(i.RVU_CheckStatus), (16 bytes).
+    Removing mg32_misc.o(.rev16_text), (4 bytes).
+    Removing mg32_misc.o(.revsh_text), (4 bytes).
+    Removing mg32_misc.o(i.NVIC_SystemLPConfig), (32 bytes).
+    Removing mg32_misc.o(i.SysTick_CLKSourceConfig), (36 bytes).
+    Removing mg32_pwr.o(.rev16_text), (4 bytes).
+    Removing mg32_pwr.o(.revsh_text), (4 bytes).
+    Removing mg32_pwr.o(i.PWR_DeInit), (22 bytes).
+    Removing mg32_pwr.o(i.PWR_EnterSLEEPMode), (72 bytes).
+    Removing mg32_pwr.o(i.PWR_EnterSTOPMode), (288 bytes).
+    Removing mg32_pwr.o(i.PWR_GetPVDOFlagStatus), (16 bytes).
+    Removing mg32_pwr.o(i.PWR_PVDCmd), (36 bytes).
+    Removing mg32_pwr.o(i.PWR_PVDLevelConfig), (24 bytes).
+    Removing mg32_rcc.o(.rev16_text), (4 bytes).
+    Removing mg32_rcc.o(.revsh_text), (4 bytes).
+    Removing mg32_rcc.o(i.RCC_AHBPeriphResetCmd), (32 bytes).
+    Removing mg32_rcc.o(i.RCC_APB1PeriphResetCmd), (32 bytes).
+    Removing mg32_rcc.o(i.RCC_ClearFlag), (20 bytes).
+    Removing mg32_rcc.o(i.RCC_ClearITPendingBit), (20 bytes).
+    Removing mg32_rcc.o(i.RCC_DeInit), (68 bytes).
+    Removing mg32_rcc.o(i.RCC_GetFlagStatus), (48 bytes).
+    Removing mg32_rcc.o(i.RCC_GetITStatus), (16 bytes).
+    Removing mg32_rcc.o(i.RCC_GetSYSCLKSource), (16 bytes).
+    Removing mg32_rcc.o(i.RCC_HCLKConfig), (24 bytes).
+    Removing mg32_rcc.o(i.RCC_HSICmd), (36 bytes).
+    Removing mg32_rcc.o(i.RCC_ITConfig), (36 bytes).
+    Removing mg32_rcc.o(i.RCC_LSICmd), (36 bytes).
+    Removing mg32_rcc.o(i.RCC_MCOConfig), (24 bytes).
+    Removing mg32_rcc.o(i.RCC_PCLK1Config), (32 bytes).
+    Removing mg32_rcc.o(i.RCC_SYSCLKConfig), (24 bytes).
+    Removing mg32_spi.o(.rev16_text), (4 bytes).
+    Removing mg32_spi.o(.revsh_text), (4 bytes).
+    Removing mg32_spi.o(i.SPI_BiDirectionalLineConfig), (64 bytes).
+    Removing mg32_spi.o(i.SPI_CSInternalSelected), (24 bytes).
+    Removing mg32_spi.o(i.SPI_ClearITPendingBit), (4 bytes).
+    Removing mg32_spi.o(i.SPI_Cmd), (24 bytes).
+    Removing mg32_spi.o(i.SPI_DataSizeConfig), (36 bytes).
+    Removing mg32_spi.o(i.SPI_DataSizeTypeConfig), (16 bytes).
+    Removing mg32_spi.o(i.SPI_DeInit), (32 bytes).
+    Removing mg32_spi.o(i.SPI_GetFlagStatus), (18 bytes).
+    Removing mg32_spi.o(i.SPI_GetITStatus), (18 bytes).
+    Removing mg32_spi.o(i.SPI_ITCmd), (24 bytes).
+    Removing mg32_spi.o(i.SPI_ITConfig), (20 bytes).
+    Removing mg32_spi.o(i.SPI_Init), (172 bytes).
+    Removing mg32_spi.o(i.SPI_NSSInternalSoftwareConfig), (16 bytes).
+    Removing mg32_spi.o(i.SPI_ReceiveData), (6 bytes).
+    Removing mg32_spi.o(i.SPI_RxBytes), (4 bytes).
+    Removing mg32_spi.o(i.SPI_SendData), (4 bytes).
+    Removing mg32_spi.o(i.SPI_SlaveAdjust), (14 bytes).
+    Removing mg32_spi.o(i.SPI_StructInit), (32 bytes).
+    Removing mg32_syscfg.o(.rev16_text), (4 bytes).
+    Removing mg32_syscfg.o(.revsh_text), (4 bytes).
+    Removing mg32_syscfg.o(i.SYSCFG_DeInit), (28 bytes).
+    Removing mg32_syscfg.o(i.SYSCFG_EXTILineConfig), (164 bytes).
+    Removing mg32_syscfg.o(i.SYSCFG_MemoryRemapConfig), (24 bytes).
+    Removing mg32_tim.o(.rev16_text), (4 bytes).
+    Removing mg32_tim.o(.revsh_text), (4 bytes).
+    Removing mg32_tim.o(i.TI1_Configure), (52 bytes).
+    Removing mg32_tim.o(i.TI2_Configure), (64 bytes).
+    Removing mg32_tim.o(i.TI3_Configure), (60 bytes).
+    Removing mg32_tim.o(i.TI4_Configure), (70 bytes).
+    Removing mg32_tim.o(i.TIM_ARRPreloadConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_BDTRConfig), (30 bytes).
+    Removing mg32_tim.o(i.TIM_BDTRStructInit), (18 bytes).
+    Removing mg32_tim.o(i.TIM_CCPreloadControl), (24 bytes).
+    Removing mg32_tim.o(i.TIM_CCxCmd), (26 bytes).
+    Removing mg32_tim.o(i.TIM_CCxNCmd), (26 bytes).
+    Removing mg32_tim.o(i.TIM_ClearFlag), (6 bytes).
+    Removing mg32_tim.o(i.TIM_ClearITPendingBit), (6 bytes).
+    Removing mg32_tim.o(i.TIM_Cmd), (24 bytes).
+    Removing mg32_tim.o(i.TIM_CounterModeConfig), (14 bytes).
+    Removing mg32_tim.o(i.TIM_CtrlPWMOutputs), (28 bytes).
+    Removing mg32_tim.o(i.TIM_DeInit), (88 bytes).
+    Removing mg32_tim.o(i.TIM_EncoderInterfaceConfig), (52 bytes).
+    Removing mg32_tim.o(i.TIM_ForcedOC1Config), (20 bytes).
+    Removing mg32_tim.o(i.TIM_ForcedOC2Config), (24 bytes).
+    Removing mg32_tim.o(i.TIM_ForcedOC3Config), (20 bytes).
+    Removing mg32_tim.o(i.TIM_ForcedOC4Config), (24 bytes).
+    Removing mg32_tim.o(i.TIM_GenerateEvent), (4 bytes).
+    Removing mg32_tim.o(i.TIM_GetCapture1), (6 bytes).
+    Removing mg32_tim.o(i.TIM_GetCapture2), (6 bytes).
+    Removing mg32_tim.o(i.TIM_GetCapture3), (6 bytes).
+    Removing mg32_tim.o(i.TIM_GetCapture4), (6 bytes).
+    Removing mg32_tim.o(i.TIM_GetCapture5), (6 bytes).
+    Removing mg32_tim.o(i.TIM_GetCountDirection), (12 bytes).
+    Removing mg32_tim.o(i.TIM_GetCounter), (6 bytes).
+    Removing mg32_tim.o(i.TIM_GetFlagStatus), (18 bytes).
+    Removing mg32_tim.o(i.TIM_GetITStatus), (26 bytes).
+    Removing mg32_tim.o(i.TIM_GetPrescaler), (8 bytes).
+    Removing mg32_tim.o(i.TIM_GetTIMxClock), (180 bytes).
+    Removing mg32_tim.o(i.TIM_ICInit), (120 bytes).
+    Removing mg32_tim.o(i.TIM_ICStructInit), (18 bytes).
+    Removing mg32_tim.o(i.TIM_ITConfig), (20 bytes).
+    Removing mg32_tim.o(i.TIM_ITRxExternalClockConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_InternalClockConfig), (16 bytes).
+    Removing mg32_tim.o(i.TIM_OC1FastConfig), (14 bytes).
+    Removing mg32_tim.o(i.TIM_OC1Init), (144 bytes).
+    Removing mg32_tim.o(i.TIM_OC1NPolarityConfig), (20 bytes).
+    Removing mg32_tim.o(i.TIM_OC1PolarityConfig), (20 bytes).
+    Removing mg32_tim.o(i.TIM_OC1PreloadConfig), (14 bytes).
+    Removing mg32_tim.o(i.TIM_OC2FastConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_OC2Init), (148 bytes).
+    Removing mg32_tim.o(i.TIM_OC2NPolarityConfig), (20 bytes).
+    Removing mg32_tim.o(i.TIM_OC2PolarityConfig), (20 bytes).
+    Removing mg32_tim.o(i.TIM_OC2PreloadConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_OC3FastConfig), (14 bytes).
+    Removing mg32_tim.o(i.TIM_OC3Init), (148 bytes).
+    Removing mg32_tim.o(i.TIM_OC3NPolarityConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_OC3PolarityConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_OC3PreloadConfig), (14 bytes).
+    Removing mg32_tim.o(i.TIM_OC4FastConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_OC4Init), (116 bytes).
+    Removing mg32_tim.o(i.TIM_OC4NPolarityConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_OC4PolarityConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_OC4PreloadConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_OC5PreloadConfig), (14 bytes).
+    Removing mg32_tim.o(i.TIM_OCStructInit), (20 bytes).
+    Removing mg32_tim.o(i.TIM_PWMIConfig), (128 bytes).
+    Removing mg32_tim.o(i.TIM_PWMShiftConfig), (20 bytes).
+    Removing mg32_tim.o(i.TIM_PrescalerConfig), (6 bytes).
+    Removing mg32_tim.o(i.TIM_SelectCOM), (24 bytes).
+    Removing mg32_tim.o(i.TIM_SelectHallSensor), (24 bytes).
+    Removing mg32_tim.o(i.TIM_SelectInputTrigger), (14 bytes).
+    Removing mg32_tim.o(i.TIM_SelectMasterSlaveMode), (14 bytes).
+    Removing mg32_tim.o(i.TIM_SelectOCxM), (116 bytes).
+    Removing mg32_tim.o(i.TIM_SelectOnePulseMode), (14 bytes).
+    Removing mg32_tim.o(i.TIM_SelectOutputTrigger), (14 bytes).
+    Removing mg32_tim.o(i.TIM_SelectSlaveMode), (16 bytes).
+    Removing mg32_tim.o(i.TIM_SetAutoreload), (4 bytes).
+    Removing mg32_tim.o(i.TIM_SetCCR1FALL), (4 bytes).
+    Removing mg32_tim.o(i.TIM_SetCCR2FALL), (4 bytes).
+    Removing mg32_tim.o(i.TIM_SetCCR3FALL), (4 bytes).
+    Removing mg32_tim.o(i.TIM_SetCCR4FALL), (4 bytes).
+    Removing mg32_tim.o(i.TIM_SetCCR5FALL), (4 bytes).
+    Removing mg32_tim.o(i.TIM_SetClockDivision), (16 bytes).
+    Removing mg32_tim.o(i.TIM_SetCompare1), (6 bytes).
+    Removing mg32_tim.o(i.TIM_SetCompare2), (6 bytes).
+    Removing mg32_tim.o(i.TIM_SetCompare3), (6 bytes).
+    Removing mg32_tim.o(i.TIM_SetCompare4), (6 bytes).
+    Removing mg32_tim.o(i.TIM_SetCompare5), (6 bytes).
+    Removing mg32_tim.o(i.TIM_SetCounter), (4 bytes).
+    Removing mg32_tim.o(i.TIM_SetIC1Prescaler), (14 bytes).
+    Removing mg32_tim.o(i.TIM_SetIC2Prescaler), (24 bytes).
+    Removing mg32_tim.o(i.TIM_SetIC3Prescaler), (14 bytes).
+    Removing mg32_tim.o(i.TIM_SetIC4Prescaler), (24 bytes).
+    Removing mg32_tim.o(i.TIM_TimeBaseInit), (92 bytes).
+    Removing mg32_tim.o(i.TIM_TimeBaseStructInit), (18 bytes).
+    Removing mg32_tim.o(i.TIM_UpdateDisableConfig), (24 bytes).
+    Removing mg32_tim.o(i.TIM_UpdateRequestConfig), (14 bytes).
+    Removing mg32_uid.o(.rev16_text), (4 bytes).
+    Removing mg32_uid.o(.revsh_text), (4 bytes).
+    Removing mg32_uid.o(i.Get_ChipsetUIDw0), (12 bytes).
+    Removing mg32_uid.o(i.Get_ChipsetUIDw1), (12 bytes).
+    Removing mg32_uid.o(i.Get_ChipsetUIDw2), (12 bytes).
+    Removing mg32_usart.o(.rev16_text), (4 bytes).
+    Removing mg32_usart.o(.revsh_text), (4 bytes).
+    Removing mg32_usart.o(i.USART_DeInit), (64 bytes).
+    Removing mg32_usart.o(i.USART_GetFlagStatus), (18 bytes).
+    Removing mg32_usart.o(i.USART_HalfDuplexCmd), (24 bytes).
+    Removing mg32_usart.o(i.USART_RxCmd), (24 bytes).
+    Removing mg32_usart.o(i.USART_SendData), (8 bytes).
+    Removing mg32_usart.o(i.USART_SyncMasterConfig), (136 bytes).
+    Removing mg32_usart.o(i.USART_SyncSlaveConfig), (64 bytes).
+    Removing mg32_usart.o(i.USART_TxCmd), (24 bytes).
+    Removing system_mg32f003.o(.rev16_text), (4 bytes).
+    Removing system_mg32f003.o(.revsh_text), (4 bytes).
+    Removing startup_mg32f003_keil.o(HEAP), (0 bytes).
+
+301 unused section(s) (total 8768 bytes) removed from the image.
+
+==============================================================================
+
+Image Symbol Table
+
+    Local Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    ../clib/microlib/division.c              0x00000000   Number         0  uidiv.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_adc.c 0x00000000   Number         0  mg32_adc.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_crc.c 0x00000000   Number         0  mg32_crc.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_dbg.c 0x00000000   Number         0  mg32_dbg.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_exti.c 0x00000000   Number         0  mg32_exti.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_flash.c 0x00000000   Number         0  mg32_flash.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_gpio.c 0x00000000   Number         0  mg32_gpio.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_i2c.c 0x00000000   Number         0  mg32_i2c.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_iwdg.c 0x00000000   Number         0  mg32_iwdg.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_misc.c 0x00000000   Number         0  mg32_misc.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_pwr.c 0x00000000   Number         0  mg32_pwr.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_rcc.c 0x00000000   Number         0  mg32_rcc.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_spi.c 0x00000000   Number         0  mg32_spi.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_syscfg.c 0x00000000   Number         0  mg32_syscfg.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_tim.c 0x00000000   Number         0  mg32_tim.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_uid.c 0x00000000   Number         0  mg32_uid.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\src\mg32_usart.c 0x00000000   Number         0  mg32_usart.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\Source\KEIL_StartAsm\startup_mg32f003_keil.s 0x00000000   Number         0  startup_mg32f003_keil.o ABSOLUTE
+    ..\..\..\..\..\Device\MG32F003\Source\system_mg32f003.c 0x00000000   Number         0  system_mg32f003.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_adc.c 0x00000000   Number         0  mg32_adc.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_crc.c 0x00000000   Number         0  mg32_crc.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_dbg.c 0x00000000   Number         0  mg32_dbg.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_exti.c 0x00000000   Number         0  mg32_exti.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_flash.c 0x00000000   Number         0  mg32_flash.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_gpio.c 0x00000000   Number         0  mg32_gpio.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_i2c.c 0x00000000   Number         0  mg32_i2c.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_iwdg.c 0x00000000   Number         0  mg32_iwdg.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_misc.c 0x00000000   Number         0  mg32_misc.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_pwr.c 0x00000000   Number         0  mg32_pwr.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_rcc.c 0x00000000   Number         0  mg32_rcc.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_spi.c 0x00000000   Number         0  mg32_spi.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_syscfg.c 0x00000000   Number         0  mg32_syscfg.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_tim.c 0x00000000   Number         0  mg32_tim.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_uid.c 0x00000000   Number         0  mg32_uid.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\MG32F003_Lib\\src\\mg32_usart.c 0x00000000   Number         0  mg32_usart.o ABSOLUTE
+    ..\\..\\..\\..\\..\\Device\\MG32F003\\Source\\system_mg32f003.c 0x00000000   Number         0  system_mg32f003.o ABSOLUTE
+    ..\\main.c                               0x00000000   Number         0  main.o ABSOLUTE
+    ..\\mg32f003_it.c                        0x00000000   Number         0  mg32f003_it.o ABSOLUTE
+    ..\\platform.c                           0x00000000   Number         0  platform.o ABSOLUTE
+    ..\\usart_interrupt.c                    0x00000000   Number         0  usart_interrupt.o ABSOLUTE
+    ..\main.c                                0x00000000   Number         0  main.o ABSOLUTE
+    ..\mg32f003_it.c                         0x00000000   Number         0  mg32f003_it.o ABSOLUTE
+    ..\platform.c                            0x00000000   Number         0  platform.o ABSOLUTE
+    ..\usart_interrupt.c                     0x00000000   Number         0  usart_interrupt.o ABSOLUTE
+    dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
+    handlers.s                               0x00000000   Number         0  handlers.o ABSOLUTE
+    init.s                                   0x00000000   Number         0  init.o ABSOLUTE
+    RESET                                    0x08000000   Section      192  startup_mg32f003_keil.o(RESET)
+    .ARM.Collect$$$$00000000                 0x080000c0   Section        0  entry.o(.ARM.Collect$$$$00000000)
+    .ARM.Collect$$$$00000001                 0x080000c0   Section        4  entry2.o(.ARM.Collect$$$$00000001)
+    .ARM.Collect$$$$00000004                 0x080000c4   Section        4  entry5.o(.ARM.Collect$$$$00000004)
+    .ARM.Collect$$$$00000008                 0x080000c8   Section        0  entry7b.o(.ARM.Collect$$$$00000008)
+    .ARM.Collect$$$$0000000A                 0x080000c8   Section        0  entry8b.o(.ARM.Collect$$$$0000000A)
+    .ARM.Collect$$$$0000000B                 0x080000c8   Section        8  entry9a.o(.ARM.Collect$$$$0000000B)
+    .ARM.Collect$$$$0000000E                 0x080000d0   Section        4  entry12b.o(.ARM.Collect$$$$0000000E)
+    .ARM.Collect$$$$0000000F                 0x080000d4   Section        0  entry10a.o(.ARM.Collect$$$$0000000F)
+    .ARM.Collect$$$$00000011                 0x080000d4   Section        0  entry11a.o(.ARM.Collect$$$$00000011)
+    .ARM.Collect$$$$00002712                 0x080000d4   Section        4  entry2.o(.ARM.Collect$$$$00002712)
+    __lit__00000000                          0x080000d4   Data           4  entry2.o(.ARM.Collect$$$$00002712)
+    .text                                    0x080000d8   Section       28  startup_mg32f003_keil.o(.text)
+    .text                                    0x080000f4   Section        0  uidiv.o(.text)
+    .text                                    0x08000120   Section       36  init.o(.text)
+    i.GPIO_Init                              0x08000144   Section        0  mg32_gpio.o(i.GPIO_Init)
+    i.GPIO_PinAFConfig                       0x080001de   Section        0  mg32_gpio.o(i.GPIO_PinAFConfig)
+    i.GPIO_StructInit                        0x08000206   Section        0  mg32_gpio.o(i.GPIO_StructInit)
+    i.GPIO_WriteBit                          0x08000216   Section        0  mg32_gpio.o(i.GPIO_WriteBit)
+    i.HardFault_Handler                      0x08000222   Section        0  mg32f003_it.o(i.HardFault_Handler)
+    i.NMI_Handler                            0x08000226   Section        0  mg32f003_it.o(i.NMI_Handler)
+    i.NVIC_Init                              0x08000228   Section        0  mg32_misc.o(i.NVIC_Init)
+    i.PLATFORM_Init                          0x08000290   Section        0  platform.o(i.PLATFORM_Init)
+    i.PLATFORM_InitBoardGpio                 0x0800029c   Section        0  platform.o(i.PLATFORM_InitBoardGpio)
+    PLATFORM_InitBoardGpio                   0x0800029d   Thumb Code    84  platform.o(i.PLATFORM_InitBoardGpio)
+    i.PLATFORM_InitDelay                     0x080002f0   Section        0  platform.o(i.PLATFORM_InitDelay)
+    PLATFORM_InitDelay                       0x080002f1   Thumb Code    76  platform.o(i.PLATFORM_InitDelay)
+    i.PLATFORM_LED_Enable                    0x08000344   Section        0  platform.o(i.PLATFORM_LED_Enable)
+    i.PendSV_Handler                         0x0800039a   Section        0  mg32f003_it.o(i.PendSV_Handler)
+    i.RCC_AHBPeriphClockCmd                  0x0800039c   Section        0  mg32_rcc.o(i.RCC_AHBPeriphClockCmd)
+    i.RCC_APB1PeriphClockCmd                 0x080003bc   Section        0  mg32_rcc.o(i.RCC_APB1PeriphClockCmd)
+    i.RCC_GetClocksFreq                      0x080003dc   Section        0  mg32_rcc.o(i.RCC_GetClocksFreq)
+    i.SVC_Handler                            0x08000464   Section        0  mg32f003_it.o(i.SVC_Handler)
+    i.SetSysClockToDefine                    0x08000468   Section        0  system_mg32f003.o(i.SetSysClockToDefine)
+    SetSysClockToDefine                      0x08000469   Thumb Code   174  system_mg32f003.o(i.SetSysClockToDefine)
+    i.SysTick_Handler                        0x0800052c   Section        0  mg32f003_it.o(i.SysTick_Handler)
+    i.SystemInit                             0x08000544   Section        0  system_mg32f003.o(i.SystemInit)
+    i.USART1_IRQHandler                      0x08000584   Section        0  mg32f003_it.o(i.USART1_IRQHandler)
+    i.USART_ClearFlag                        0x08000644   Section        0  mg32_usart.o(i.USART_ClearFlag)
+    i.USART_ClearITPendingBit                0x0800064a   Section        0  mg32_usart.o(i.USART_ClearITPendingBit)
+    i.USART_Cmd                              0x08000650   Section        0  mg32_usart.o(i.USART_Cmd)
+    i.USART_Configure                        0x0800066c   Section        0  usart_interrupt.o(i.USART_Configure)
+    i.USART_GetITStatus                      0x0800072c   Section        0  mg32_usart.o(i.USART_GetITStatus)
+    i.USART_ITConfig                         0x08000792   Section        0  mg32_usart.o(i.USART_ITConfig)
+    i.USART_Init                             0x080007c0   Section        0  mg32_usart.o(i.USART_Init)
+    i.USART_Interrupt_Sample                 0x08000858   Section        0  usart_interrupt.o(i.USART_Interrupt_Sample)
+    i.USART_ReceiveData                      0x0800092c   Section        0  mg32_usart.o(i.USART_ReceiveData)
+    i.USART_RxIdle_Start                     0x08000938   Section        0  usart_interrupt.o(i.USART_RxIdle_Start)
+    i.USART_StructInit                       0x08000998   Section        0  mg32_usart.o(i.USART_StructInit)
+    i.YC02_ParseFrame                        0x080009ac   Section        0  usart_interrupt.o(i.YC02_ParseFrame)
+    YC02_ParseFrame                          0x080009ad   Thumb Code   162  usart_interrupt.o(i.YC02_ParseFrame)
+    i.__NVIC_SetPriority                     0x08000a50   Section        0  platform.o(i.__NVIC_SetPriority)
+    __NVIC_SetPriority                       0x08000a51   Thumb Code   110  platform.o(i.__NVIC_SetPriority)
+    i.__scatterload_copy                     0x08000ac8   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08000ad6   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08000ad8   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.main                                   0x08000ae6   Section        0  main.o(i.main)
+    i.read_le16                              0x08000af2   Section        0  usart_interrupt.o(i.read_le16)
+    read_le16                                0x08000af3   Thumb Code    12  usart_interrupt.o(i.read_le16)
+    i.read_le24                              0x08000afe   Section        0  usart_interrupt.o(i.read_le24)
+    read_le24                                0x08000aff   Thumb Code    18  usart_interrupt.o(i.read_le24)
+    i.read_le32s                             0x08000b10   Section        0  usart_interrupt.o(i.read_le32s)
+    read_le32s                               0x08000b11   Thumb Code    24  usart_interrupt.o(i.read_le32s)
+    i.yc02_checksum                          0x08000b28   Section        0  usart_interrupt.o(i.yc02_checksum)
+    yc02_checksum                            0x08000b29   Thumb Code    28  usart_interrupt.o(i.yc02_checksum)
+    .data                                    0x20000000   Section       16  usart_interrupt.o(.data)
+    .data                                    0x20000010   Section        4  platform.o(.data)
+    .data                                    0x20000014   Section       24  mg32_rcc.o(.data)
+    .data                                    0x2000002c   Section        4  system_mg32f003.o(.data)
+    .bss                                     0x20000030   Section      524  usart_interrupt.o(.bss)
+    STACK                                    0x20000240   Section      512  startup_mg32f003_keil.o(STACK)
+
+    Global Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    BuildAttributes$$THM_ISAv3M$S$PE$A:L22$X:L11$S22$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OSPACE$EBA8$MICROLIB$REQ8$PRES8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
+    __ARM_use_no_argv                        0x00000000   Number         0  main.o ABSOLUTE
+    __arm_fini_                               - Undefined Weak Reference
+    __cpp_initialize__aeabi_                  - Undefined Weak Reference
+    __cxa_finalize                            - Undefined Weak Reference
+    __decompress                              - Undefined Weak Reference
+    _clock_init                               - Undefined Weak Reference
+    _microlib_exit                            - Undefined Weak Reference
+    __Vectors_Size                           0x000000c0   Number         0  startup_mg32f003_keil.o ABSOLUTE
+    __Vectors                                0x08000000   Data           4  startup_mg32f003_keil.o(RESET)
+    __Vectors_End                            0x080000c0   Data           0  startup_mg32f003_keil.o(RESET)
+    __main                                   0x080000c1   Thumb Code     0  entry.o(.ARM.Collect$$$$00000000)
+    _main_stk                                0x080000c1   Thumb Code     0  entry2.o(.ARM.Collect$$$$00000001)
+    _main_scatterload                        0x080000c5   Thumb Code     0  entry5.o(.ARM.Collect$$$$00000004)
+    __main_after_scatterload                 0x080000c9   Thumb Code     0  entry5.o(.ARM.Collect$$$$00000004)
+    _main_clock                              0x080000c9   Thumb Code     0  entry7b.o(.ARM.Collect$$$$00000008)
+    _main_cpp_init                           0x080000c9   Thumb Code     0  entry8b.o(.ARM.Collect$$$$0000000A)
+    _main_init                               0x080000c9   Thumb Code     0  entry9a.o(.ARM.Collect$$$$0000000B)
+    __rt_lib_shutdown_fini                   0x080000d1   Thumb Code     0  entry12b.o(.ARM.Collect$$$$0000000E)
+    __rt_final_cpp                           0x080000d5   Thumb Code     0  entry10a.o(.ARM.Collect$$$$0000000F)
+    __rt_final_exit                          0x080000d5   Thumb Code     0  entry11a.o(.ARM.Collect$$$$00000011)
+    Reset_Handler                            0x080000d9   Thumb Code     8  startup_mg32f003_keil.o(.text)
+    ADC_IRQHandler                           0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    EXTI0_1_IRQHandler                       0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    EXTI2_3_IRQHandler                       0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    EXTI4_15_IRQHandler                      0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    FLASH_IRQHandler                         0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    I2C1_IRQHandler                          0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    IWDG_IRQHandler                          0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    PVD_IRQHandler                           0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    RCC_IRQHandler                           0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    SPI1_IRQHandler                          0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    TIM14_IRQHandler                         0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    TIM1_BRK_UP_TRG_COM_IRQHandler           0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    TIM1_CC_IRQHandler                       0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    TIM3_IRQHandler                          0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    USART2_IRQHandler                        0x080000eb   Thumb Code     0  startup_mg32f003_keil.o(.text)
+    __aeabi_uidiv                            0x080000f5   Thumb Code     0  uidiv.o(.text)
+    __aeabi_uidivmod                         0x080000f5   Thumb Code    44  uidiv.o(.text)
+    __scatterload                            0x08000121   Thumb Code    28  init.o(.text)
+    __scatterload_rt2                        0x08000121   Thumb Code     0  init.o(.text)
+    GPIO_Init                                0x08000145   Thumb Code   154  mg32_gpio.o(i.GPIO_Init)
+    GPIO_PinAFConfig                         0x080001df   Thumb Code    40  mg32_gpio.o(i.GPIO_PinAFConfig)
+    GPIO_StructInit                          0x08000207   Thumb Code    16  mg32_gpio.o(i.GPIO_StructInit)
+    GPIO_WriteBit                            0x08000217   Thumb Code    12  mg32_gpio.o(i.GPIO_WriteBit)
+    HardFault_Handler                        0x08000223   Thumb Code     4  mg32f003_it.o(i.HardFault_Handler)
+    NMI_Handler                              0x08000227   Thumb Code     2  mg32f003_it.o(i.NMI_Handler)
+    NVIC_Init                                0x08000229   Thumb Code   100  mg32_misc.o(i.NVIC_Init)
+    PLATFORM_Init                            0x08000291   Thumb Code    12  platform.o(i.PLATFORM_Init)
+    PLATFORM_LED_Enable                      0x08000345   Thumb Code    86  platform.o(i.PLATFORM_LED_Enable)
+    PendSV_Handler                           0x0800039b   Thumb Code     2  mg32f003_it.o(i.PendSV_Handler)
+    RCC_AHBPeriphClockCmd                    0x0800039d   Thumb Code    28  mg32_rcc.o(i.RCC_AHBPeriphClockCmd)
+    RCC_APB1PeriphClockCmd                   0x080003bd   Thumb Code    28  mg32_rcc.o(i.RCC_APB1PeriphClockCmd)
+    RCC_GetClocksFreq                        0x080003dd   Thumb Code   110  mg32_rcc.o(i.RCC_GetClocksFreq)
+    SVC_Handler                              0x08000465   Thumb Code     2  mg32f003_it.o(i.SVC_Handler)
+    SysTick_Handler                          0x0800052d   Thumb Code    20  mg32f003_it.o(i.SysTick_Handler)
+    SystemInit                               0x08000545   Thumb Code    56  system_mg32f003.o(i.SystemInit)
+    USART1_IRQHandler                        0x08000585   Thumb Code   184  mg32f003_it.o(i.USART1_IRQHandler)
+    USART_ClearFlag                          0x08000645   Thumb Code     6  mg32_usart.o(i.USART_ClearFlag)
+    USART_ClearITPendingBit                  0x0800064b   Thumb Code     6  mg32_usart.o(i.USART_ClearITPendingBit)
+    USART_Cmd                                0x08000651   Thumb Code    28  mg32_usart.o(i.USART_Cmd)
+    USART_Configure                          0x0800066d   Thumb Code   186  usart_interrupt.o(i.USART_Configure)
+    USART_GetITStatus                        0x0800072d   Thumb Code   102  mg32_usart.o(i.USART_GetITStatus)
+    USART_ITConfig                           0x08000793   Thumb Code    44  mg32_usart.o(i.USART_ITConfig)
+    USART_Init                               0x080007c1   Thumb Code   144  mg32_usart.o(i.USART_Init)
+    USART_Interrupt_Sample                   0x08000859   Thumb Code   178  usart_interrupt.o(i.USART_Interrupt_Sample)
+    USART_ReceiveData                        0x0800092d   Thumb Code    10  mg32_usart.o(i.USART_ReceiveData)
+    USART_RxIdle_Start                       0x08000939   Thumb Code    84  usart_interrupt.o(i.USART_RxIdle_Start)
+    USART_StructInit                         0x08000999   Thumb Code    20  mg32_usart.o(i.USART_StructInit)
+    __scatterload_copy                       0x08000ac9   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08000ad7   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08000ad9   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    main                                     0x08000ae7   Thumb Code    12  main.o(i.main)
+    Region$$Table$$Base                      0x08000b44   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08000b64   Number         0  anon$$obj.o(Region$$Table)
+    g_tof_distance_mm                        0x20000000   Data           2  usart_interrupt.o(.data)
+    g_tof_confidence                         0x20000002   Data           1  usart_interrupt.o(.data)
+    g_tof_frame_ok                           0x20000003   Data           1  usart_interrupt.o(.data)
+    g_tof_last_frame_length                  0x20000004   Data           2  usart_interrupt.o(.data)
+    g_tof_valid_frame_count                  0x20000008   Data           4  usart_interrupt.o(.data)
+    g_tof_bad_frame_count                    0x2000000c   Data           4  usart_interrupt.o(.data)
+    PLATFORM_DelayTick                       0x20000010   Data           4  platform.o(.data)
+    AHBPreTable                              0x20000014   Data          16  mg32_rcc.o(.data)
+    APBPreTable                              0x20000024   Data           8  mg32_rcc.o(.data)
+    SystemCoreClock                          0x2000002c   Data           4  system_mg32f003.o(.data)
+    USART_RxStruct                           0x20000030   Data         262  usart_interrupt.o(.bss)
+    USART_TxStruct                           0x20000136   Data         262  usart_interrupt.o(.bss)
+    __initial_sp                             0x20000440   Data           0  startup_mg32f003_keil.o(STACK)
+
+
+
+==============================================================================
+
+Memory Map of the image
+
+  Image Entry point : 0x080000c1
+
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00000b94, Max: 0x00004000, ABSOLUTE)
+
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000b64, Max: 0x00004000, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x08000000   0x08000000   0x000000c0   Data   RO         2229    RESET               startup_mg32f003_keil.o
+    0x080000c0   0x080000c0   0x00000000   Code   RO         2234  * .ARM.Collect$$$$00000000  mc_p.l(entry.o)
+    0x080000c0   0x080000c0   0x00000004   Code   RO         2239    .ARM.Collect$$$$00000001  mc_p.l(entry2.o)
+    0x080000c4   0x080000c4   0x00000004   Code   RO         2242    .ARM.Collect$$$$00000004  mc_p.l(entry5.o)
+    0x080000c8   0x080000c8   0x00000000   Code   RO         2244    .ARM.Collect$$$$00000008  mc_p.l(entry7b.o)
+    0x080000c8   0x080000c8   0x00000000   Code   RO         2246    .ARM.Collect$$$$0000000A  mc_p.l(entry8b.o)
+    0x080000c8   0x080000c8   0x00000008   Code   RO         2247    .ARM.Collect$$$$0000000B  mc_p.l(entry9a.o)
+    0x080000d0   0x080000d0   0x00000004   Code   RO         2254    .ARM.Collect$$$$0000000E  mc_p.l(entry12b.o)
+    0x080000d4   0x080000d4   0x00000000   Code   RO         2249    .ARM.Collect$$$$0000000F  mc_p.l(entry10a.o)
+    0x080000d4   0x080000d4   0x00000000   Code   RO         2251    .ARM.Collect$$$$00000011  mc_p.l(entry11a.o)
+    0x080000d4   0x080000d4   0x00000004   Code   RO         2240    .ARM.Collect$$$$00002712  mc_p.l(entry2.o)
+    0x080000d8   0x080000d8   0x0000001c   Code   RO         2230    .text               startup_mg32f003_keil.o
+    0x080000f4   0x080000f4   0x0000002c   Code   RO         2237    .text               mc_p.l(uidiv.o)
+    0x08000120   0x08000120   0x00000024   Code   RO         2255    .text               mc_p.l(init.o)
+    0x08000144   0x08000144   0x0000009a   Code   RO          784    i.GPIO_Init         mg32_gpio.o
+    0x080001de   0x080001de   0x00000028   Code   RO          785    i.GPIO_PinAFConfig  mg32_gpio.o
+    0x08000206   0x08000206   0x00000010   Code   RO          793    i.GPIO_StructInit   mg32_gpio.o
+    0x08000216   0x08000216   0x0000000c   Code   RO          795    i.GPIO_WriteBit     mg32_gpio.o
+    0x08000222   0x08000222   0x00000004   Code   RO          281    i.HardFault_Handler  mg32f003_it.o
+    0x08000226   0x08000226   0x00000002   Code   RO          282    i.NMI_Handler       mg32f003_it.o
+    0x08000228   0x08000228   0x00000068   Code   RO         1124    i.NVIC_Init         mg32_misc.o
+    0x08000290   0x08000290   0x0000000c   Code   RO          220    i.PLATFORM_Init     platform.o
+    0x0800029c   0x0800029c   0x00000054   Code   RO          221    i.PLATFORM_InitBoardGpio  platform.o
+    0x080002f0   0x080002f0   0x00000054   Code   RO          222    i.PLATFORM_InitDelay  platform.o
+    0x08000344   0x08000344   0x00000056   Code   RO          223    i.PLATFORM_LED_Enable  platform.o
+    0x0800039a   0x0800039a   0x00000002   Code   RO          283    i.PendSV_Handler    mg32f003_it.o
+    0x0800039c   0x0800039c   0x00000020   Code   RO         1206    i.RCC_AHBPeriphClockCmd  mg32_rcc.o
+    0x080003bc   0x080003bc   0x00000020   Code   RO         1208    i.RCC_APB1PeriphClockCmd  mg32_rcc.o
+    0x080003dc   0x080003dc   0x00000088   Code   RO         1213    i.RCC_GetClocksFreq  mg32_rcc.o
+    0x08000464   0x08000464   0x00000002   Code   RO          284    i.SVC_Handler       mg32f003_it.o
+    0x08000466   0x08000466   0x00000002   PAD
+    0x08000468   0x08000468   0x000000c4   Code   RO         2189    i.SetSysClockToDefine  system_mg32f003.o
+    0x0800052c   0x0800052c   0x00000018   Code   RO          285    i.SysTick_Handler   mg32f003_it.o
+    0x08000544   0x08000544   0x00000040   Code   RO         2190    i.SystemInit        system_mg32f003.o
+    0x08000584   0x08000584   0x000000c0   Code   RO          286    i.USART1_IRQHandler  mg32f003_it.o
+    0x08000644   0x08000644   0x00000006   Code   RO         2079    i.USART_ClearFlag   mg32_usart.o
+    0x0800064a   0x0800064a   0x00000006   Code   RO         2080    i.USART_ClearITPendingBit  mg32_usart.o
+    0x08000650   0x08000650   0x0000001c   Code   RO         2081    i.USART_Cmd         mg32_usart.o
+    0x0800066c   0x0800066c   0x000000c0   Code   RO          155    i.USART_Configure   usart_interrupt.o
+    0x0800072c   0x0800072c   0x00000066   Code   RO         2084    i.USART_GetITStatus  mg32_usart.o
+    0x08000792   0x08000792   0x0000002c   Code   RO         2086    i.USART_ITConfig    mg32_usart.o
+    0x080007be   0x080007be   0x00000002   PAD
+    0x080007c0   0x080007c0   0x00000098   Code   RO         2087    i.USART_Init        mg32_usart.o
+    0x08000858   0x08000858   0x000000d4   Code   RO          156    i.USART_Interrupt_Sample  usart_interrupt.o
+    0x0800092c   0x0800092c   0x0000000a   Code   RO         2088    i.USART_ReceiveData  mg32_usart.o
+    0x08000936   0x08000936   0x00000002   PAD
+    0x08000938   0x08000938   0x00000060   Code   RO          157    i.USART_RxIdle_Start  usart_interrupt.o
+    0x08000998   0x08000998   0x00000014   Code   RO         2091    i.USART_StructInit  mg32_usart.o
+    0x080009ac   0x080009ac   0x000000a2   Code   RO          158    i.YC02_ParseFrame   usart_interrupt.o
+    0x08000a4e   0x08000a4e   0x00000002   PAD
+    0x08000a50   0x08000a50   0x00000078   Code   RO          225    i.__NVIC_SetPriority  platform.o
+    0x08000ac8   0x08000ac8   0x0000000e   Code   RO         2259    i.__scatterload_copy  mc_p.l(handlers.o)
+    0x08000ad6   0x08000ad6   0x00000002   Code   RO         2260    i.__scatterload_null  mc_p.l(handlers.o)
+    0x08000ad8   0x08000ad8   0x0000000e   Code   RO         2261    i.__scatterload_zeroinit  mc_p.l(handlers.o)
+    0x08000ae6   0x08000ae6   0x0000000c   Code   RO            3    i.main              main.o
+    0x08000af2   0x08000af2   0x0000000c   Code   RO          159    i.read_le16         usart_interrupt.o
+    0x08000afe   0x08000afe   0x00000012   Code   RO          160    i.read_le24         usart_interrupt.o
+    0x08000b10   0x08000b10   0x00000018   Code   RO          161    i.read_le32s        usart_interrupt.o
+    0x08000b28   0x08000b28   0x0000001c   Code   RO          162    i.yc02_checksum     usart_interrupt.o
+    0x08000b44   0x08000b44   0x00000020   Data   RO         2257    Region$$Table       anon$$obj.o
+
+
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08000b64, Size: 0x00000440, Max: 0x00000800, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000000   0x08000b64   0x00000010   Data   RW          164    .data               usart_interrupt.o
+    0x20000010   0x08000b74   0x00000004   Data   RW          226    .data               platform.o
+    0x20000014   0x08000b78   0x00000018   Data   RW         1224    .data               mg32_rcc.o
+    0x2000002c   0x08000b90   0x00000004   Data   RW         2191    .data               system_mg32f003.o
+    0x20000030        -       0x0000020c   Zero   RW          163    .bss                usart_interrupt.o
+    0x2000023c   0x08000b94   0x00000004   PAD
+    0x20000240        -       0x00000200   Zero   RW         2227    STACK               startup_mg32f003_keil.o
+
+
+==============================================================================
+
+Image component sizes
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+
+        12          0          0          0          0      49189   main.o
+       222          0          0          0          0       3629   mg32_gpio.o
+       104          4          0          0          0       1120   mg32_misc.o
+       200         34          0         24          0       3035   mg32_rcc.o
+       368          8          0          0          0       6189   mg32_usart.o
+       226         12          0          0          0       3135   mg32f003_it.o
+       386         18          0          4          0      11707   platform.o
+        28          8        192          0        512        764   startup_mg32f003_keil.o
+       260         30          0          4          0       3307   system_mg32f003.o
+       744         52          0         16        524       7288   usart_interrupt.o
+
+    ----------------------------------------------------------------------
+      2558        166        224         48       1040      89363   Object Totals
+         0          0         32          0          0          0   (incl. Generated)
+         8          0          0          0          4          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Member Name
+
+         0          0          0          0          0          0   entry.o
+         0          0          0          0          0          0   entry10a.o
+         0          0          0          0          0          0   entry11a.o
+         4          0          0          0          0          0   entry12b.o
+         8          4          0          0          0          0   entry2.o
+         4          0          0          0          0          0   entry5.o
+         0          0          0          0          0          0   entry7b.o
+         0          0          0          0          0          0   entry8b.o
+         8          4          0          0          0          0   entry9a.o
+        30          0          0          0          0          0   handlers.o
+        36          8          0          0          0         68   init.o
+        44          0          0          0          0         72   uidiv.o
+
+    ----------------------------------------------------------------------
+       134         16          0          0          0        140   Library Totals
+         0          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
+
+       134         16          0          0          0        140   mc_p.l
+
+    ----------------------------------------------------------------------
+       134         16          0          0          0        140   Library Totals
+
+    ----------------------------------------------------------------------
+
+==============================================================================
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
+
+      2692        182        224         48       1040      88159   Grand Totals
+      2692        182        224         48       1040      88159   ELF Image Totals
+      2692        182        224         48          0          0   ROM Totals
+
+==============================================================================
+
+    Total RO  Size (Code + RO Data)                 2916 (   2.85kB)
+    Total RW  Size (RW Data + ZI Data)              1088 (   1.06kB)
+    Total ROM Size (Code + RO Data + RW Data)       2964 (   2.89kB)
+
+==============================================================================
+
