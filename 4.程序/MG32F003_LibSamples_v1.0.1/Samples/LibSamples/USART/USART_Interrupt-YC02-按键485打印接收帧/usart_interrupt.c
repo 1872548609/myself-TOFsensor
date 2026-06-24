@@ -6,7 +6,7 @@
  * 调试：PA1 / AF2 -> USART2_TX，经 MAX485 DI 输出至 485_A / 485_B。
  *       PB1 / AF2 -> USART2_RX（当前不使用，仅保留配置）。
  *       PB0       -> RS485 T/R 方向控制（需要 PCB 实际已将 PB0 接至 T/R）。
- * 按键：PA7（KEY_BLUE）按下时，回传最近完成的一帧原始数据。
+ * 按键：PA7（KEY_BLUE）按下时，回传最近一帧校验通过后的解析数据。
  */
 
 #define _USART_INTERRUPT_C_
@@ -42,6 +42,13 @@ typedef struct
     int16_t  cal_tof;
     uint8_t  confidence;
 } YC02_FrameData_t;
+
+/*
+ * 最近一次通过帧头、长度和校验验证的解析结果。
+ * 仅在主循环中更新、仅在按键打印时读取，因此不需要额外临界区。
+ */
+static YC02_FrameData_t g_tof_last_parsed = {0};
+static uint8_t g_tof_last_parsed_valid = 0U;
 
 /* 当前硬件：蓝键 PA7 按下为低电平。 */
 #define TOF_PRINT_KEY_PORT        GPIOA
@@ -250,94 +257,121 @@ static void USART2_DebugWriteString(const char *str)
     }
 }
 
-static void USART2_DebugWriteHexByte(uint8_t data)
+static void USART2_DebugWriteU32(uint32_t value)
 {
-    static const char hex[] = "0123456789ABCDEF";
+    char buf[10];
+    uint8_t count = 0U;
 
-    USART2_DebugWriteByte((uint8_t)hex[(data >> 4) & 0x0FU]);
-    USART2_DebugWriteByte((uint8_t)hex[data & 0x0FU]);
+    if (value == 0U)
+    {
+        USART2_DebugWriteByte((uint8_t)'0');
+        return;
+    }
+
+    while ((value != 0U) && (count < sizeof(buf)))
+    {
+        buf[count++] = (char)('0' + (value % 10U));
+        value /= 10U;
+    }
+
+    while (count != 0U)
+    {
+        count--;
+        USART2_DebugWriteByte((uint8_t)buf[count]);
+    }
 }
 
 static void USART2_DebugWriteU16(uint16_t value)
 {
-    char buf[5];
-    uint8_t i;
-
-    for (i = 0U; i < sizeof(buf); i++)
-    {
-        buf[sizeof(buf) - 1U - i] = (char)('0' + (value % 10U));
-        value /= 10U;
-    }
-
-    for (i = 0U; i < sizeof(buf); i++)
-    {
-        USART2_DebugWriteByte((uint8_t)buf[i]);
-    }
+    USART2_DebugWriteU32((uint32_t)value);
 }
 
 static void USART2_DebugWriteS16(int16_t value)
 {
-    uint16_t abs_value;
-
     if (value < 0)
     {
         USART2_DebugWriteByte((uint8_t)'-');
-        abs_value = (uint16_t)(-(int32_t)value);
+        USART2_DebugWriteU32((uint32_t)(-(int32_t)value));
     }
     else
     {
-        abs_value = (uint16_t)value;
+        USART2_DebugWriteU32((uint32_t)value);
     }
-
-    USART2_DebugWriteU16(abs_value);
 }
 
 /**
- * @brief 蓝键按下时，回传当前最近完成的一帧 TOF 数据。
+ * @brief 按 0.01 摄氏度的原始单位输出温度，例如 4011 -> 40.11 C。
+ */
+static void USART2_DebugWriteTemperature(int32_t temperature_centi)
+{
+    uint32_t abs_value;
+
+    if (temperature_centi < 0)
+    {
+        USART2_DebugWriteByte((uint8_t)'-');
+        abs_value = (uint32_t)(-(temperature_centi + 1));
+        abs_value += 1U;
+    }
+    else
+    {
+        abs_value = (uint32_t)temperature_centi;
+    }
+
+    USART2_DebugWriteU32(abs_value / 100U);
+    USART2_DebugWriteByte((uint8_t)'.');
+    USART2_DebugWriteByte((uint8_t)('0' + ((abs_value / 10U) % 10U)));
+    USART2_DebugWriteByte((uint8_t)('0' + (abs_value % 10U)));
+    USART2_DebugWriteString(" C");
+}
+
+/**
+ * @brief 蓝键按下时，通过 USART2 回传最近一帧的解析结果。
  * @note 发送期间会短暂阻塞主循环，属于测试用途；不要用于最终连续通信版本。
  */
 static void USART2_DebugPrintLastFrame(void)
 {
-    uint16_t i;
-    uint8_t checksum;
-
     USART2_DebugBeginTx();
 
-    USART2_DebugWriteString("\r\n[TOF] LEN=");
-    USART2_DebugWriteU16(g_tof_last_frame_count);
-    USART2_DebugWriteString(" OK=");
-    USART2_DebugWriteByte((g_tof_frame_ok != 0U) ? (uint8_t)'1' : (uint8_t)'0');
-    USART2_DebugWriteString(" OF=");
-    USART2_DebugWriteByte((g_tof_last_frame_overflow != 0U) ? (uint8_t)'1' : (uint8_t)'0');
-    USART2_DebugWriteString(" RAW=");
-
-    if (g_tof_last_frame_count == 0U)
+    if (g_tof_last_parsed_valid == 0U)
     {
-        USART2_DebugWriteString("NO_FRAME");
-    }
-    else
-    {
-        for (i = 0U; i < g_tof_last_frame_count; i++)
-        {
-            USART2_DebugWriteHexByte(g_tof_last_frame[i]);
-            USART2_DebugWriteByte((uint8_t)' ');
-        }
-
-        if (g_tof_last_frame_count == TOF_FRAME_LENGTH)
-        {
-            checksum = yc02_checksum((const uint8_t *)g_tof_last_frame,
-                                     TOF_FRAME_LENGTH - 1U);
-            USART2_DebugWriteString("CK=");
-            USART2_DebugWriteHexByte(checksum);
-            USART2_DebugWriteByte((uint8_t)'/');
-            USART2_DebugWriteHexByte(g_tof_last_frame[TOF_FRAME_LENGTH - 1U]);
-        }
+        USART2_DebugWriteString("\r\n[TOF] No valid parsed frame\r\n");
+        USART2_DebugWriteString("LEN = ");
+        USART2_DebugWriteU16(g_tof_last_frame_count);
+        USART2_DebugWriteString("\r\n");
+        USART2_DebugEndTx();
+        return;
     }
 
-    USART2_DebugWriteString("\r\nCAL_TOF=");
-    USART2_DebugWriteS16(g_tof_distance_mm);
-    USART2_DebugWriteString("mm CONF=");
-    USART2_DebugWriteU16((uint16_t)g_tof_confidence);
+    USART2_DebugWriteString("\r\nnorm_tof    = ");
+    USART2_DebugWriteU16(g_tof_last_parsed.norm_tof);
+
+    USART2_DebugWriteString("\r\nnorm_peak   = ");
+    USART2_DebugWriteU16(g_tof_last_parsed.norm_peak);
+
+    USART2_DebugWriteString("\r\nnorm_noise  = ");
+    USART2_DebugWriteU32(g_tof_last_parsed.norm_noise);
+
+    USART2_DebugWriteString("\r\nmultshot    = ");
+    USART2_DebugWriteU16(g_tof_last_parsed.multshot);
+
+    USART2_DebugWriteString("\r\natten_peak  = ");
+    USART2_DebugWriteU16(g_tof_last_parsed.atten_peak);
+
+    USART2_DebugWriteString("\r\natten_noise = ");
+    USART2_DebugWriteU32(g_tof_last_parsed.atten_noise);
+
+    USART2_DebugWriteString("\r\nref_tof     = ");
+    USART2_DebugWriteU16(g_tof_last_parsed.ref_tof);
+
+    USART2_DebugWriteString("\r\ntemperature = ");
+    USART2_DebugWriteTemperature(g_tof_last_parsed.temperature);
+
+    USART2_DebugWriteString("\r\ncal_tof     = ");
+    USART2_DebugWriteS16(g_tof_last_parsed.cal_tof);
+    USART2_DebugWriteString(" mm");
+
+    USART2_DebugWriteString("\r\nconfidence  = ");
+    USART2_DebugWriteU16((uint16_t)g_tof_last_parsed.confidence);
     USART2_DebugWriteString("\r\n");
 
     USART2_DebugEndTx();
@@ -420,6 +454,9 @@ void USART_Interrupt_Sample(void)
                                  USART_RxStruct.CurrentCount,
                                  &frame) != 0U))
             {
+                g_tof_last_parsed = frame;
+                g_tof_last_parsed_valid = 1U;
+
                 g_tof_distance_mm = frame.cal_tof;
                 g_tof_confidence = frame.confidence;
                 g_tof_frame_ok = 1U;
@@ -430,6 +467,7 @@ void USART_Interrupt_Sample(void)
             }
             else
             {
+                g_tof_last_parsed_valid = 0U;
                 g_tof_frame_ok = 0U;
                 g_tof_bad_frame_count++;
 
