@@ -1,12 +1,3 @@
-/**
- * @file    platform.h
- * @author  MegawinTech Application Team
- * @version V1.0.1
- * @date    17-Nov-2023
- * @brief   This file contains all the system functions
- */
-
-/* Define to prevent recursive inclusion */
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
@@ -14,10 +5,14 @@
 extern "C" {
 #endif
 
-/* Files include */
 #include "mg32_conf.h"
 
-/* Exported types *****************************************************************************************************/
+/*
+ * 本板实际映射：
+ * LED1 -> PA10 绿灯，高电平点亮
+ * LED2 -> PA9  红灯，高电平点亮
+ * LED3 / LED4 未使用，仅为兼容原示例枚举保留。
+ */
 typedef enum
 {
     LED1,
@@ -26,13 +21,7 @@ typedef enum
     LED4
 } LEDn_TypeDef;
 
-/* Exported constants *************************************************************************************************/
-
-/* Exported macro *****************************************************************************************************/
-
-/* Exported variables *************************************************************************************************/
 #undef EXTERN
-
 #ifdef _PLATFORM_C_
 #define EXTERN
 #else
@@ -41,7 +30,6 @@ typedef enum
 
 EXTERN volatile uint32_t PLATFORM_DelayTick;
 
-/* Exported functions *************************************************************************************************/
 void PLATFORM_DelayMS(uint32_t Millisecond);
 void PLATFORM_LED_Enable(LEDn_TypeDef LEDn, FunctionalState State);
 void PLATFORM_LED_Toggle(LEDn_TypeDef LEDn);
@@ -52,4 +40,3 @@ void PLATFORM_Init(void);
 #endif
 
 #endif /* _PLATFORM_H_ */
-

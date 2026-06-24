@@ -1,386 +1,119 @@
 /**
- * @file    platform.c
- * @author  MegawinTech Application Team
- * @version V1.0.1
- * @date    17-Nov-2023
- * @brief   This file contains all the system functions
+ * @file platform.c
+ * @brief YC02 板级基础初始化。
+ *
+ * 注意：原厂 USART 示例把 PA10 当作 USART1 控制台、把 PA15 当作 LED。
+ * 本硬件中 PA10 是绿灯、PA15 是 TOF 的 PWD，不能继续使用原示例映射。
  */
 
-/* Define to prevent recursive inclusion */
 #define _PLATFORM_C_
 
-/* Files include */
-#include <stdio.h>
 #include "platform.h"
 
-/**
-  * @addtogroup MG32F003_LibSamples
-  * @{
-  */
+/*
+ * 原测试代码因 PLATFORM_InitLED() 将 PA15 当作低有效 LED 使用，
+ * 实际上会把 PA15 拉高。本版本显式保留这个上电行为作为 TOF 运行电平。
+ * 若实测 VM4304 的 PWD 为低电平运行，只需将 Bit_SET 改为 Bit_RESET。
+ */
+#define TOF_PWD_RUN_LEVEL    Bit_SET
 
-/**
-  * @addtogroup MG32
-  * @{
-  */
-
-/**
-  * @addtogroup PLATFORM
-  * @{
-  */
-
-/* Private typedef ****************************************************************************************************/
-
-/* Private define *****************************************************************************************************/
-
-/* Private macro ******************************************************************************************************/
-
-/* Private variables **************************************************************************************************/
-
-/* Private functions **************************************************************************************************/
-
-/***********************************************************************************************************************
-  * @brief  Initialize SysTick for delay function
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
-void PLATFORM_InitDelay(void)
+static void PLATFORM_InitDelay(void)
 {
     RCC_ClocksTypeDef RCC_Clocks;
 
     RCC_GetClocksFreq(&RCC_Clocks);
 
-    if (SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000))
+    if (SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000U))
     {
         while (1)
         {
         }
     }
 
-    NVIC_SetPriority(SysTick_IRQn, 0x0);
+    NVIC_SetPriority(SysTick_IRQn, 0x00U);
 }
 
-/***********************************************************************************************************************
-  * @brief  Millisecond delay
-  * @note   none
-  * @param  Millisecond: delay time unit
-  * @retval none
-  *********************************************************************************************************************/
 void PLATFORM_DelayMS(uint32_t Millisecond)
 {
     PLATFORM_DelayTick = Millisecond;
 
-    while (0 != PLATFORM_DelayTick)
+    while (PLATFORM_DelayTick != 0U)
     {
     }
 }
 
-/***********************************************************************************************************************
-  * @brief  Initialize console for printf
-  * @note   none
-  * @param  Baudrate : USART1 communication baudrate
-  * @retval none
-  *********************************************************************************************************************/
-void PLATFORM_InitConsole(uint32_t Baudrate)
-{
-    GPIO_InitTypeDef GPIO_InitStruct;
-    USART_InitTypeDef USART_InitStruct;
-
-    RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_USART1, ENABLE);
-
-    USART_StructInit(&USART_InitStruct);
-    USART_InitStruct.USART_BaudRate = Baudrate;
-    USART_InitStruct.USART_StopBits = USART_StopBits_1;
-    USART_InitStruct.USART_Parity   = USART_Parity_No;
-    USART_InitStruct.USART_Mode     = USART_Mode_Rx | USART_Mode_Tx;
-    USART_Init(USART1, &USART_InitStruct);
-
-    RCC_AHBPeriphClockCmd(RCC_AHBENR_GPIOA, ENABLE);
-
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_4);
-
-    GPIO_StructInit(&GPIO_InitStruct);
-    GPIO_InitStruct.GPIO_Pin   = GPIO_Pin_10;
-    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_High;
-    GPIO_InitStruct.GPIO_Mode  = GPIO_Mode_AF_PP;
-    GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-    USART_Cmd(USART1, ENABLE);
-}
-
-#if   defined (__ICCARM__)
-
-#if   (__VER__ >= 9030001)
-
-/* Files include */
-#include <stddef.h>
-#include <LowLevelIOInterface.h>
-
-/***********************************************************************************************************************
-  * @brief  redefine __write function
-  * @note   for printf
-  * @param  handle
-  * @param  *buf
-  * @param  bufSize
-  * @retval nChars
-  *********************************************************************************************************************/
-size_t __write(int handle, const unsigned char *buf, size_t bufSize)
-{
-    size_t nChars = 0;
-
-     /* Check for the command to flush all handles */
-    if (-1 == handle)
-    {
-        return (0);
-    }
-
-     /* Check for stdout and stderr (only necessary if FILE descriptors are enabled.) */
-    if ((_LLIO_STDOUT != handle) && (_LLIO_STDERR != handle))
-    {
-        return (-1);
-    }
-
-    for (/* Empty */; bufSize > 0; --bufSize)
-    {
-        USART_SendData(USART1, *buf);
-
-        while (RESET == USART_GetFlagStatus(USART1, USART_FLAG_TC))
-        {
-        }
-
-        ++buf;
-        ++nChars;
-    }
-
-    return (nChars);
-}
-
-#else
-
-/***********************************************************************************************************************
-  * @brief  redefine fputc function
-  * @note   for printf
-  * @param  ch
-  * @param  f
-  * @retval ch
-  *********************************************************************************************************************/
-int fputc(int ch, FILE *f)
-{
-    USART_SendData(USART1, (uint8_t)ch);
-
-    while (RESET == USART_GetFlagStatus(USART1, USART_FLAG_TC))
-    {
-    }
-
-    return (ch);
-}
-
-#endif
-
-#elif defined (__GNUC__)
-
-/***********************************************************************************************************************
-  * @brief  redefine fputc function
-  * @note   for printf
-  * @param  ch
-  * @param  f
-  * @retval ch
-  *********************************************************************************************************************/
-int fputc(int ch, FILE *f)
-{
-    USART_SendData(USART2, (uint8_t)ch);
-
-    while (RESET == USART_GetFlagStatus(USART2, USART_FLAG_TC))
-    {
-    }
-
-    return (ch);
-}
-
-#else
-
-/***********************************************************************************************************************
-  * @brief  redefine fputc function
-  * @note   for printf
-  * @param  ch
-  * @param  f
-  * @retval ch
-  *********************************************************************************************************************/
-int fputc(int ch, FILE *f)
-{
-    USART_SendData(USART1, (uint8_t)ch);
-
-    while (RESET == USART_GetFlagStatus(USART1, USART_FLAG_TC))
-    {
-    }
-
-    return (ch);
-}
-
-#endif
-
-/***********************************************************************************************************************
-  * @brief  Initialize LED GPIO pin
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
-void PLATFORM_InitLED(void)
+static void PLATFORM_InitBoardGpio(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct;
 
-    RCC_AHBPeriphClockCmd(RCC_AHBENR_GPIOA, ENABLE);
-
-    PLATFORM_LED_Enable(LED1, DISABLE);
-    PLATFORM_LED_Enable(LED2, DISABLE);
-    PLATFORM_LED_Enable(LED3, DISABLE);
-    PLATFORM_LED_Enable(LED4, DISABLE);
+    RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_GPIOA, ENABLE);
 
     GPIO_StructInit(&GPIO_InitStruct);
-    GPIO_InitStruct.GPIO_Pin   = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_10 | GPIO_Pin_15;
+    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_15;
     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_High;
-    GPIO_InitStruct.GPIO_Mode  = GPIO_Mode_Out_PP;
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /* 原理图中 LED 经限流电阻接地：PA10 / PA9 输出高电平时点亮。 */
+    GPIO_WriteBit(GPIOA, GPIO_Pin_10, Bit_RESET);
+    GPIO_WriteBit(GPIOA, GPIO_Pin_9, Bit_RESET);
+
+    /* PA15 为 TOF 模块 PWD，不再被当作 LED 操作。 */
+    GPIO_WriteBit(GPIOA, GPIO_Pin_15, TOF_PWD_RUN_LEVEL);
 }
 
-/***********************************************************************************************************************
-  * @brief  LED on or off
-  * @note   none
-  * @param  LEDn : LED index
-  * @arg    LED1, LED2, LED3, LED4
-  * @param  State
-  * @arg    ENABLE, DISABLE
-  * @retval none
-  *********************************************************************************************************************/
 void PLATFORM_LED_Enable(LEDn_TypeDef LEDn, FunctionalState State)
 {
     switch (LEDn)
     {
-        case LED1:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_15, (ENABLE == State) ? Bit_RESET : Bit_SET);
+        case LED1:  /* 绿灯：PA10，高有效 */
+            GPIO_WriteBit(GPIOA, GPIO_Pin_10,
+                          (State == ENABLE) ? Bit_SET : Bit_RESET);
             break;
 
-        case LED2:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_10, (ENABLE == State) ? Bit_RESET : Bit_SET);
+        case LED2:  /* 红灯：PA9，高有效 */
+            GPIO_WriteBit(GPIOA, GPIO_Pin_9,
+                          (State == ENABLE) ? Bit_SET : Bit_RESET);
             break;
 
         case LED3:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_6, (ENABLE == State) ? Bit_RESET : Bit_SET);
-            break;
-
         case LED4:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_5, (ENABLE == State) ? Bit_RESET : Bit_SET);
-            break;
-
         default:
+            /* 本板未使用。 */
             break;
     }
 }
 
-/***********************************************************************************************************************
-  * @brief  LED toggle display
-  * @note   none
-  * @param  LEDn : LED index
-  * @arg    LED1, LED2, LED3, LED4
-  * @retval none
-  *********************************************************************************************************************/
 void PLATFORM_LED_Toggle(LEDn_TypeDef LEDn)
 {
     switch (LEDn)
     {
         case LED1:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_15, GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_15) ? Bit_RESET : Bit_SET);
+            GPIO_WriteBit(GPIOA, GPIO_Pin_10,
+                          (GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_10) != 0U)
+                              ? Bit_RESET : Bit_SET);
             break;
 
         case LED2:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_10, GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_10) ? Bit_RESET : Bit_SET);
+            GPIO_WriteBit(GPIOA, GPIO_Pin_9,
+                          (GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_9) != 0U)
+                              ? Bit_RESET : Bit_SET);
             break;
 
         case LED3:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_6, GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_6) ? Bit_RESET : Bit_SET);
-            break;
-
         case LED4:
-            GPIO_WriteBit(GPIOA, GPIO_Pin_5, GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_5) ? Bit_RESET : Bit_SET);
-            break;
-
         default:
             break;
     }
 }
 
-/***********************************************************************************************************************
-  * @brief  Print information
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
-void PLATFORM_PrintInfo(void)
-{
-    RCC_ClocksTypeDef RCC_Clocks;
-
-    printf("\r\nBOARD : Megawin_EV");
-    printf("\r\nMCU : MG32F003");
-
-    printf("\r\n");
-
-    switch (READ_BIT(RCC->CFGR, RCC_CFGR_SWS))
-    {
-        case 0x00:
-            printf("\r\nHSI/6 used as system clock source");
-            break;
-
-        case 0x04:
-            printf("\r\nHSE used as system clock source");
-            break;
-
-        case 0x08:
-            printf("\r\nHSI used as system clock source");
-            break;
-
-        case 0x0C:
-            printf("\r\nLSI used as system clock source");
-            break;
-
-        default:
-            break;
-    }
-
-    RCC_GetClocksFreq(&RCC_Clocks);
-
-    printf("\r\n");
-    printf("\r\nSYSCLK Frequency : %7.3f MHz", (double)RCC_Clocks.SYSCLK_Frequency / (double)1000000.0);
-    printf("\r\nHCLK   Frequency : %7.3f MHz", (double)RCC_Clocks.HCLK_Frequency / (double)1000000.0);
-    printf("\r\nPCLK1  Frequency : %7.3f MHz", (double)RCC_Clocks.PCLK1_Frequency / (double)1000000.0);
-    printf("\r\n");
-}
-
-/***********************************************************************************************************************
-  * @brief  Initialize Platform
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
 void PLATFORM_Init(void)
 {
     PLATFORM_InitDelay();
+    PLATFORM_InitBoardGpio();
 
-    PLATFORM_InitLED();
-
-    PLATFORM_InitConsole(115200);
-
-    PLATFORM_PrintInfo();
+    /*
+     * 故意不再调用 PLATFORM_InitConsole() / printf：
+     * USART1 现在已经连接 TOF，向该口打印调试字符串会直接送到 TOF 模块。
+     */
 }
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-

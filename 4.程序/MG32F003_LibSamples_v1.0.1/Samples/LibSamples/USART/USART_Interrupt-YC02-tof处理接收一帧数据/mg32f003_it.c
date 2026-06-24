@@ -1,125 +1,66 @@
 /**
- * @file    mg32f003_it.c
- * @author  MegawinTech Application Team
- * @version V1.0.1
- * @date    17-Nov-2023
- * @brief   This file contains all the system functions
+ * @file mg32f003_it.c
+ * @brief 中断服务函数。
  */
 
-/* Define to prevent recursive inclusion */
 #define _MG32F003_IT_C_
 
-/* Files include */
 #include "platform.h"
 #include "usart_interrupt.h"
 #include "mg32f003_it.h"
 
-/**
-  * @addtogroup MG32F003_LibSamples
-  * @{
-  */
-
-/**
-  * @addtogroup Peripheral
-  * @{
-  */
-
-/**
-  * @addtogroup Peripheral_SampleFunction
-  * @{
-  */
-
-/* Private typedef ****************************************************************************************************/
-
-/* Private define *****************************************************************************************************/
-
-/* Private macro ******************************************************************************************************/
-
-/* Private variables **************************************************************************************************/
-
-/* Private functions **************************************************************************************************/
-
-/***********************************************************************************************************************
-  * @brief  This function handles NMI exception
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
 void NMI_Handler(void)
 {
 }
 
-/***********************************************************************************************************************
-  * @brief  This function handles Hard Fault exception
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
 void HardFault_Handler(void)
 {
-    /* Go to infinite loop when Hard Fault exception occurs */
     while (1)
     {
     }
 }
 
-/***********************************************************************************************************************
-  * @brief  This function handles SVCall exception
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
 void SVC_Handler(void)
 {
 }
 
-/***********************************************************************************************************************
-  * @brief  This function handles PendSVC exception
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
 void PendSV_Handler(void)
 {
 }
 
-/***********************************************************************************************************************
-  * @brief  This function handles SysTick Handler
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
 void SysTick_Handler(void)
 {
-    if (0 != PLATFORM_DelayTick)
+    if (PLATFORM_DelayTick != 0U)
     {
         PLATFORM_DelayTick--;
     }
 }
 
-/***********************************************************************************************************************
-  * @brief  This function handles USART2 Handler
-  * @note   none
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
-void USART2_IRQHandler(void)
+/**
+ * @brief USART1 中断：对应 TOF 模块串口。
+ */
+void USART1_IRQHandler(void)
 {
-    uint8_t RxData = 0;
+    uint8_t RxData;
 
-    /* 错误中断处理 */
-    if ((RESET != USART_GetITStatus(USART2, USART_IT_PE)) ||
-        (RESET != USART_GetITStatus(USART2, USART_IT_ERR)))
+    RxData = 0U;
+
+    /*
+     * 错误标志出现时，读 DR 释放接收状态。
+     * 当前测试程序仅丢弃该异常字节，下一次 IDLE 后由主循环标记帧失败。
+     */
+    if ((USART_GetITStatus(USART1, USART_IT_PE) != RESET)
+     || (USART_GetITStatus(USART1, USART_IT_ERR) != RESET))
     {
-        (void)USART_ReceiveData(USART2);
+        (void)USART_ReceiveData(USART1);
     }
 
-    /* RXNE：逐字节接收 */
-    if (RESET != USART_GetITStatus(USART2, USART_IT_RXNE))
+    /* RXNE：逐字节缓存。 */
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
     {
-        RxData = USART_ReceiveData(USART2);
+        RxData = USART_ReceiveData(USART1);
 
-        if (0 == USART_RxStruct.CompleteFlag)
+        if (USART_RxStruct.CompleteFlag == 0U)
         {
             if (USART_RxStruct.CurrentCount < USART_RxStruct.Length)
             {
@@ -127,59 +68,29 @@ void USART2_IRQHandler(void)
             }
             else
             {
-                /* 超出最大长度，标记溢出，并结束本帧 */
-                USART_RxStruct.OverflowFlag = 1;
-                USART_RxStruct.CompleteFlag = 1;
-
-                USART_ITConfig(USART2, USART_IT_RXNE, DISABLE);
-                USART_ITConfig(USART2, USART_IT_IDLE, DISABLE);
+                /* 超过允许长度，结束本帧，主循环会按无效帧处理。 */
+                USART_RxStruct.OverflowFlag = 1U;
+                USART_RxStruct.CompleteFlag = 1U;
+                USART_ITConfig(USART1, USART_IT_RXNE, DISABLE);
+                USART_ITConfig(USART1, USART_IT_IDLE, DISABLE);
             }
         }
     }
 
-    /* IDLE：判定一帧结束
-     * 一般清 IDLE 的方式是先读 SR，再读 DR
-     * 这里库里 GetITStatus 已经读了 SR，下面再读一次 DR 用于清除
+    /*
+     * IDLE：采用“先读状态、再读数据”的清除方式。
+     * USART_GetITStatus() 已读取状态寄存器，此处再读一次 DR 清除 IDLE。
      */
-    if (RESET != USART_GetITStatus(USART2, USART_IT_IDLE))
+    if (USART_GetITStatus(USART1, USART_IT_IDLE) != RESET)
     {
-        (void)USART_ReceiveData(USART2);   // 清 IDLE
+        (void)USART_ReceiveData(USART1);
 
-        if ((0 == USART_RxStruct.CompleteFlag) &&
-            (USART_RxStruct.CurrentCount > 0))
+        if ((USART_RxStruct.CompleteFlag == 0U)
+         && (USART_RxStruct.CurrentCount > 0U))
         {
-            USART_RxStruct.CompleteFlag = 1;
-
-            USART_ITConfig(USART2, USART_IT_RXNE, DISABLE);
-            USART_ITConfig(USART2, USART_IT_IDLE, DISABLE);
+            USART_RxStruct.CompleteFlag = 1U;
+            USART_ITConfig(USART1, USART_IT_RXNE, DISABLE);
+            USART_ITConfig(USART1, USART_IT_IDLE, DISABLE);
         }
     }
-
-     /* TXE：发送中断 */
-//    if (RESET != USART_GetITStatus(USART2, USART_IT_TXE))
-//    {
-//        if (0 == USART_TxStruct.CompleteFlag)
-//        {
-//            USART_SendData(USART2, USART_TxStruct.Buffer[USART_TxStruct.CurrentCount++]);
-
-//            if (USART_TxStruct.CurrentCount >= USART_TxStruct.Length)
-//            {
-//                USART_TxStruct.CompleteFlag = 1;
-//                USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
-//            }
-//        }
-//    }
 }
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-

@@ -1,5 +1,4 @@
 .\objects\platform.o: ..\platform.c
-.\objects\platform.o: D:\long\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\platform.o: ..\platform.h
 .\objects\platform.o: ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\inc\mg32_conf.h
 .\objects\platform.o: ..\..\..\..\..\Device\MG32F003\Include\mg32f003_device.h

@@ -1,5 +1,4 @@
 .\objects\usart_interrupt.o: ..\usart_interrupt.c
-.\objects\usart_interrupt.o: D:\long\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\usart_interrupt.o: ..\platform.h
 .\objects\usart_interrupt.o: ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\inc\mg32_conf.h
 .\objects\usart_interrupt.o: ..\..\..\..\..\Device\MG32F003\Include\mg32f003_device.h

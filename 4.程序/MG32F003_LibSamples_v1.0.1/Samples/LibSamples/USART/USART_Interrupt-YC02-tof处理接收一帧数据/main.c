@@ -1,70 +1,27 @@
 /**
- * @file    main.c
- * @author  MegawinTech Application Team
- * @version V1.0.1
- * @date    17-Nov-2023
- * @brief   This file contains all the system functions
+ * @file main.c
+ * @brief YC02 TOF 测试程序入口
  */
 
-/* Define to prevent recursive inclusion */
 #define _MAIN_C_
 
-/* Files include */
 #include "platform.h"
 #include "usart_interrupt.h"
 #include "main.h"
 
-/**
-  * @addtogroup MG32F003_LibSamples
-  * @{
-  */
-
-/**
-  * @addtogroup USART
-  * @{
-  */
-
-/**
-  * @addtogroup USART_Interrupt
-  * @{
-  */
-
-/* Private typedef ****************************************************************************************************/
-
-/* Private define *****************************************************************************************************/
-
-/* Private macro ******************************************************************************************************/
-
-/* Private variables **************************************************************************************************/
-
-/* Private functions **************************************************************************************************/
-
-/***********************************************************************************************************************
-  * @brief  This function is main entrance
-  * @note   main
-  * @param  none
-  * @retval none
-  *********************************************************************************************************************/
 int main(void)
 {
     PLATFORM_Init();
 
+    /*
+     * 本测试函数内部保持循环：
+     * - USART1（PA12/PA3）接收 TOF 原始帧；
+     * - 通过 PA10 绿灯 / PA9 红灯显示解析状态；
+     * - 可在 Keil Watch 中观察 g_tof_xxx 变量。
+     */
     USART_Interrupt_Sample();
 
     while (1)
     {
     }
 }
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
