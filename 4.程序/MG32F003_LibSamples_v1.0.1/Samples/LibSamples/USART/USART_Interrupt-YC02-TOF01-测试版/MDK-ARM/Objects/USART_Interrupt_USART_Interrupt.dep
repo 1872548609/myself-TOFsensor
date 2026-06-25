@@ -1,6 +1,6 @@
 Dependencies for Project 'USART_Interrupt', Target 'USART_Interrupt': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (..\main.c)(0x6A3C8ABC)(-c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\USART_Interrupt -I ..\..\..\..\..\Device\CMSIS\Core\Include -I ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\inc -I ..\..\..\..\..\Device\MG32F003\Include-D__UVISION_VERSION="540" -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (..\main.c)(0x6A3C8C3A)(-c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\USART_Interrupt -I ..\..\..\..\..\Device\CMSIS\Core\Include -I ..\..\..\..\..\Device\MG32F003\MG32F003_Lib\inc -I ..\..\..\..\..\Device\MG32F003\Include-D__UVISION_VERSION="540" -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (..\platform.h)(0x6A3BA8D4)
 I (..\..\..\..\..\Device\MG32F003\MG32F003_Lib\inc\mg32_conf.h)(0x6A2A121C)
 I (..\..\..\..\..\Device\MG32F003\Include\mg32f003_device.h)(0x6A2A121C)
