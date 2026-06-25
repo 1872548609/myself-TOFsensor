@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\USART_Interrupt.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\USART_Interrupt.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Jun 24 18:49:41 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Jun 25 09:56:13 2026
 <BR><P>
-<H3>Maximum Stack Usage =        176 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        144 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; Sensor_HandleFrame &rArr; Sensor_AddCalibrationSample &rArr; Sensor_CompleteCalibration &rArr; Sensor_ResetCandidates &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
+main &rArr; Sensor_HandleFrame &rArr; Sensor_ProcessDistance &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
 <P>
 <H3>
 Mutually Recursive functions
@@ -460,7 +460,7 @@ Global Symbols
 <P><STRONG><a name="[6e]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[16]"></a>main</STRONG> (Thumb, 74 bytes, Stack size 32 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = main &rArr; Sensor_HandleFrame &rArr; Sensor_AddCalibrationSample &rArr; Sensor_CompleteCalibration &rArr; Sensor_ResetCandidates &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
+<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = main &rArr; Sensor_HandleFrame &rArr; Sensor_ProcessDistance &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_DebugWriteString
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOF_Service
@@ -501,7 +501,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[2f]"></a>Sensor_AddCalibrationSample</STRONG> (Thumb, 124 bytes, Stack size 16 bytes, main.o(i.Sensor_AddCalibrationSample))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = Sensor_AddCalibrationSample &rArr; Sensor_CompleteCalibration &rArr; Sensor_ResetCandidates &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = Sensor_AddCalibrationSample &rArr; Sensor_CompleteCalibration &rArr; Sensor_DebugCalibration &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_GetMedian
 <LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_DebugCalibration
@@ -545,7 +545,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[32]"></a>Sensor_CompleteCalibration</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, main.o(i.Sensor_CompleteCalibration))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = Sensor_CompleteCalibration &rArr; Sensor_ResetCandidates &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = Sensor_CompleteCalibration &rArr; Sensor_DebugCalibration &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_SetIndication
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_ResetCandidates
@@ -596,12 +596,11 @@ Local Symbols
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_DebugWriteS16
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_DebugPrefix
 </UL>
-<BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_ResetCandidates
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_ProcessDistance
+<BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_ProcessDistance
 </UL>
 
 <P><STRONG><a name="[41]"></a>Sensor_EnterFault</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, main.o(i.Sensor_EnterFault))
-<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = Sensor_EnterFault &rArr; Sensor_ResetCandidates &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Sensor_EnterFault &rArr; USART2_DebugWriteString &rArr; USART2_DebugWriteByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_DebugWriteString
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_ResetCandidates
@@ -617,7 +616,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[42]"></a>Sensor_HandleFrame</STRONG> (Thumb, 128 bytes, Stack size 16 bytes, main.o(i.Sensor_HandleFrame))
-<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = Sensor_HandleFrame &rArr; Sensor_AddCalibrationSample &rArr; Sensor_CompleteCalibration &rArr; Sensor_ResetCandidates &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = Sensor_HandleFrame &rArr; Sensor_ProcessDistance &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_DebugWriteString
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_ResetCandidates
@@ -655,7 +654,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[44]"></a>Sensor_ProcessDistance</STRONG> (Thumb, 272 bytes, Stack size 24 bytes, main.o(i.Sensor_ProcessDistance))
+<P><STRONG><a name="[44]"></a>Sensor_ProcessDistance</STRONG> (Thumb, 218 bytes, Stack size 24 bytes, main.o(i.Sensor_ProcessDistance))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = Sensor_ProcessDistance &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_DebugTimingEvent
@@ -664,18 +663,14 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_HandleFrame
 </UL>
 
-<P><STRONG><a name="[3b]"></a>Sensor_ResetCandidates</STRONG> (Thumb, 80 bytes, Stack size 16 bytes, main.o(i.Sensor_ResetCandidates))
-<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Sensor_ResetCandidates &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
-</UL>
-<BR>[Calls]<UL><LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_DebugTimingEvent
-</UL>
-<BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_HandleFrame
+<P><STRONG><a name="[3b]"></a>Sensor_ResetCandidates</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(i.Sensor_ResetCandidates))
+<BR><BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_HandleFrame
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_EnterFault
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_CompleteCalibration
 </UL>
 
 <P><STRONG><a name="[49]"></a>Sensor_ServiceTimeouts</STRONG> (Thumb, 136 bytes, Stack size 8 bytes, main.o(i.Sensor_ServiceTimeouts))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = Sensor_ServiceTimeouts &rArr; Sensor_EnterFault &rArr; Sensor_ResetCandidates &rArr; Sensor_DebugTimingEvent &rArr; USART2_DebugWriteU16 &rArr; USART2_DebugWriteU32 &rArr; USART2_DebugWriteByte
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = Sensor_ServiceTimeouts &rArr; Sensor_CalibrationFail &rArr; Sensor_DebugPrefix &rArr; USART2_DebugWriteString &rArr; USART2_DebugWriteByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_TimeElapsed
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_EnterFault

@@ -30,14 +30,14 @@
 
 /* ============================ 用户可调参数区 ============================ */
 /* 设置距离迟滞宽度为 20 mm；触发阈值为设定值+20，复位阈值为设定值-20。 */
-#define SENSOR_HYSTERESIS_MM                   20U
+#define SENSOR_HYSTERESIS_MM                   2U   //== 改为2mm
 /* 设置由遮光进入触发状态所需的连续有效 TOF 帧数为 3 帧。 */
-#define SENSOR_ON_CONFIRM_FRAMES               3U
+#define SENSOR_ON_CONFIRM_FRAMES               2U   //== 改为2帧
 /* 设置由触发返回遮光状态所需的连续有效 TOF 帧数为 3 帧。 */
-#define SENSOR_OFF_CONFIRM_FRAMES              3U
+#define SENSOR_OFF_CONFIRM_FRAMES              2U   //== 改为2帧
 
 /* 设定 TOF 帧最低可信度；低于 70 的帧不参与标定和输出判定。 */
-#define SENSOR_CONFIDENCE_MIN                  70U
+#define SENSOR_CONFIDENCE_MIN                  90U  //== 改为90
 /* 设定允许参与判定的最小距离，避免 0 或异常近距离被当作有效测量。 */
 #define SENSOR_DISTANCE_MIN_VALID_MM           1
 /* 设定允许参与判定的最大距离，超出该值的帧视为无效。 */
@@ -67,7 +67,7 @@
 
 /* 1=候选帧未达到确认数就退出时，也输出 ON_ABORT/OFF_ABORT。 */
 /* 开启时，候选帧未满足确认次数就中断也会打印 ABORT 日志。 */
-#define SENSOR_TIMING_LOG_ABORTED_CANDIDATE    1U
+#define SENSOR_TIMING_LOG_ABORTED_CANDIDATE    0U
 
 /*
  * 故障或未标定时 Q1 的状态。
@@ -532,7 +532,7 @@ static int16_t Sensor_GetMedian(const int16_t *values, uint8_t count)
     return sorted[count / 2U];
 }
 
-/* 定义临时 LED 指示设置函数。 */
+/* 定义临时 LED 指示状态设置函数。 */
 static void Sensor_SetIndication(Indication_t indication, uint32_t now, uint32_t duration_ms)
 {
     /* 保存当前优先显示的提示类型。 */
@@ -917,7 +917,7 @@ static void Sensor_ServiceTimeouts(uint32_t now)
     if ((g_sensor.cal_step == CAL_STEP_CAPTURE_1) ||
         (g_sensor.cal_step == CAL_STEP_CAPTURE_2))
     {
-        /* 计算当前采样段已经持续多久。 */
+        /* 计算当前采样段已经持续多久是否到达。 */
         if (Sensor_TimeElapsed(now,
                                g_sensor.cal_step_start_tick,
                                SENSOR_CAL_CAPTURE_TIMEOUT_MS) != 0U)
