@@ -32,9 +32,9 @@
 /* 设置距离迟滞宽度为 20 mm；触发阈值为设定值+20，复位阈值为设定值-20。 */
 #define SENSOR_HYSTERESIS_MM                   2U   //== 改为2mm
 /* 设置由遮光进入触发状态所需的连续有效 TOF 帧数为 3 帧。 */
-#define SENSOR_ON_CONFIRM_FRAMES               2U   //== 改为2帧
+#define SENSOR_ON_CONFIRM_FRAMES               1U   //== 改为2帧
 /* 设置由触发返回遮光状态所需的连续有效 TOF 帧数为 3 帧。 */
-#define SENSOR_OFF_CONFIRM_FRAMES              2U   //== 改为2帧
+#define SENSOR_OFF_CONFIRM_FRAMES              1U   //== 改为2帧
 
 /* 设定 TOF 帧最低可信度；低于 70 的帧不参与标定和输出判定。 */
 #define SENSOR_CONFIDENCE_MIN                  90U  //== 改为90
@@ -67,7 +67,7 @@
 
 /* 1=候选帧未达到确认数就退出时，也输出 ON_ABORT/OFF_ABORT。 */
 /* 开启时，候选帧未满足确认次数就中断也会打印 ABORT 日志。 */
-#define SENSOR_TIMING_LOG_ABORTED_CANDIDATE    0U
+#define SENSOR_TIMING_LOG_ABORTED_CANDIDATE    1U
 
 /*
  * 故障或未标定时 Q1 的状态。

@@ -18,7 +18,7 @@
 
 /* -------------------- 串口参数 -------------------- */
 #define TOF_USART_BAUDRATE              460800UL
-#define RS485_DEBUG_BAUDRATE            460800UL
+#define RS485_DEBUG_BAUDRATE            115200UL
 
 /* -------------------- MAX485 方向控制 -------------------- */
 /* 原理图中 PB0 同时连接 MAX485 的 DE 与 /RE：
